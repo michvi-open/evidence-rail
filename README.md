@@ -1,6 +1,6 @@
 # EvidenceRail
 
-*Release status: v0.1 release candidate. Public launch remains subject to final trademark clearance.*
+*Release status: v0.1 release candidate.*
 
 **EvidenceRail — an open schema for portable child-safety control evidence.**
 
@@ -108,8 +108,7 @@ dependency-free, auditable in one file, and usable offline. It's cross-checked a
 
 Charter ✓ → Data Model ✓ → Schema ✓ → Fixtures ✓ → Validator ✓ → Reference tool ✓
 
-Naming: EvidenceRail is the v0.1 project name; final trademark clearance remains a public-release gate. Next: public explainer /
-launch materials, not further engineering.
+EvidenceRail v0.1 is feature-complete for the current release scope. Further changes should be limited to verified defects, interoperability improvements, or documented release requirements.
 
 ## License
 
