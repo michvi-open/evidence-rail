@@ -125,6 +125,11 @@
   <button class="demo" id="loadDemoBtn">Load demo scenario</button>
 </header>
 
+<div id="demo-banner" class="hint" style="display:none; margin:12px 0 0;">
+  <strong>Synthetic demonstration scenario.</strong>
+  No real platform, child, account, or production data is used.
+</div>
+
 <nav>
   <button class="tab active" data-screen="create-cer">Create Control Evidence Record</button>
   <button class="tab" data-screen="create-ror">Create Review/Outcome Record</button>
@@ -154,14 +159,14 @@
         <div class="panel">
           <h2>Control context</h2>
           <div class="row2">
-            <div class="field"><label>Control ID</label><input type="text" id="cer-control_id" placeholder="account_access_restriction"></div>
-            <div class="field"><label>Control version</label><input type="text" id="cer-control_version" placeholder="3.2.0"></div>
+            <div class="field"><label>Control ID</label><input type="text" id="cer-control_id" placeholder="e.g. control-id"></div>
+            <div class="field"><label>Control version</label><input type="text" id="cer-control_version" placeholder="e.g. 1.0.0"></div>
           </div>
           <div class="row2">
-            <div class="field"><label>Policy ID</label><input type="text" id="cer-policy_id" placeholder="au-smma-policy"></div>
-            <div class="field"><label>Policy version</label><input type="text" id="cer-policy_version" placeholder="1.4.0"></div>
+            <div class="field"><label>Policy ID</label><input type="text" id="cer-policy_id" placeholder="e.g. policy-id"></div>
+            <div class="field"><label>Policy version</label><input type="text" id="cer-policy_version" placeholder="e.g. 1.0.0"></div>
           </div>
-          <div class="field"><label>Jurisdiction</label><input type="text" id="cer-jurisdiction" placeholder="AU"></div>
+          <div class="field"><label>Jurisdiction</label><input type="text" id="cer-jurisdiction" placeholder="e.g. GB"></div>
         </div>
 
         <div class="panel">
@@ -180,16 +185,16 @@
 
         <div class="panel">
           <h2>Review</h2>
-          <div class="checkrow"><input type="checkbox" id="cer-review_available" checked>
+          <div class="checkrow"><input type="checkbox" id="cer-review_available">
             <label for="cer-review_available">Review/appeal mechanism available</label></div>
           <div class="field"><label>Review mechanism reference (optional)</label>
-            <input type="text" id="cer-review_ref" placeholder="guardian-appeal-v1"></div>
+            <input type="text" id="cer-review_ref" placeholder="e.g. review-mechanism-id"></div>
         </div>
 
         <div class="panel">
           <h2>Evidence metadata</h2>
           <div class="field"><label>Source system ID</label>
-            <input type="text" id="cer-source_system" placeholder="platform-trust-safety-svc"></div>
+            <input type="text" id="cer-source_system" placeholder="e.g. source-system-id"></div>
           <div class="hint">record_id, timestamps, and record_hash are generated automatically —
             the hash is a real SHA-256 over the canonicalized record, computed in your browser.</div>
         </div>
@@ -241,7 +246,7 @@
         <div class="panel">
           <h2>Evidence metadata</h2>
           <div class="field"><label>Source system ID</label>
-            <input type="text" id="ror-source_system" placeholder="platform-trust-safety-svc"></div>
+            <input type="text" id="ror-source_system" placeholder="e.g. source-system-id"></div>
         </div>
 
         <button class="primary" id="ror-build-btn">Build record</button>
@@ -551,13 +556,13 @@ function fillSelect(el, options, placeholder){
   if (placeholder){ const o=document.createElement("option"); o.value=""; o.textContent=placeholder; el.appendChild(o); }
   options.forEach(v => { const o=document.createElement("option"); o.value=v; o.textContent=v; el.appendChild(o); });
 }
-fillSelect(document.getElementById("cer-age_band"), AGE_BAND);
-fillSelect(document.getElementById("cer-age_confidence"), AGE_CONF);
-fillSelect(document.getElementById("cer-trigger_type"), TRIGGER_TYPES);
-fillSelect(document.getElementById("cer-action_type"), ACTION_TYPES);
-fillSelect(document.getElementById("cer-action_scope"), ACTION_SCOPE);
-fillSelect(document.getElementById("ror-initiator"), REVIEW_INITIATOR);
-fillSelect(document.getElementById("ror-status"), REVIEW_STATUS);
+fillSelect(document.getElementById("cer-age_band"), AGE_BAND, "— select —");
+fillSelect(document.getElementById("cer-age_confidence"), AGE_CONF, "— select —");
+fillSelect(document.getElementById("cer-trigger_type"), TRIGGER_TYPES, "— select —");
+fillSelect(document.getElementById("cer-action_type"), ACTION_TYPES, "— select —");
+fillSelect(document.getElementById("cer-action_scope"), ACTION_SCOPE, "— select —");
+fillSelect(document.getElementById("ror-initiator"), REVIEW_INITIATOR, "— select —");
+fillSelect(document.getElementById("ror-status"), REVIEW_STATUS, "— select —");
 ACTION_TYPES.forEach(v => { const o=document.createElement("option"); o.value=v; o.textContent=v;
   document.getElementById("ror-outcome_action").appendChild(o); });
 
@@ -620,7 +625,7 @@ async function buildCER(){
       ...(val("cer-review_ref") ? {review_mechanism_reference: val("cer-review_ref")} : {}),
     },
     evidence_metadata: {
-      source_system_id: val("cer-source_system") || "unspecified-source",
+      source_system_id: val("cer-source_system"),
       recorded_at: ts,
       hash_canonicalization_method: "JCS-1.0",
     },
@@ -701,7 +706,7 @@ async function runRORBuild(){
     review_status: val("ror-status"),
     ...(val("ror-outcome_action") ? {outcome_action: val("ror-outcome_action")} : {}),
     evidence_metadata: {
-      source_system_id: val("ror-source_system") || "unspecified-source",
+      source_system_id: val("ror-source_system"),
       recorded_at: ts,
       hash_canonicalization_method: "JCS-1.0",
     },
@@ -819,6 +824,7 @@ document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () =>
 // with genuine hashes so the integrity check is real, not staged).
 // ---------------------------------------------------------------------------
 document.getElementById("loadDemoBtn").addEventListener("click", async () => {
+  document.getElementById("demo-banner").style.display = "block";
   const ts1 = "2026-08-21T09:12:03.000Z";
   const cer = {
     record_id: "ER-FLAGSHIP-CER-0001",
