@@ -33,7 +33,7 @@ Full field-level definitions: [`model/EvidenceRail-DataModel-v0.1.md`](model/Evi
 ## Repository structure
 
 ```text
-evidencerail/
+evidence-rail/
 ├── charter/            Problem statement, scope, non-goals, interoperability boundaries
 ├── model/               Field-level data model + decisions log
 ├── schema/               JSON Schema definitions (CER, ROR, shared types, trigger-context)
@@ -89,13 +89,13 @@ Explicit, by design (see the charter's Non-Goals section for the reasoning):
 - Not a parental-monitoring tool
 - Not a compliance-certification system
 - Not a child-content logging system
-- Does not store child identity or content, by default, anywhere in the schema
+- The schema does not define fields for child identity or child content
 
 ## Reference tool — what it does and doesn't do
 
 `reference-app/index.html` is a single static file: create a CER, create a linked ROR, validate a
-pasted record, and view the linked evidence chain with a real (not staged) SHA-256 integrity check
-computed in your browser via the Web Crypto API. It has no login, no database, no cloud storage, no
+pasted record, and view the linked evidence chain with a SHA-256 integrity check
+computed locally in your browser via the Web Crypto API. It has no login, no database, no cloud storage, no
 platform integrations, no dashboard, no scoring, and renders no compliance verdict — it shows you
 what a record says and whether it's well-formed, nothing more.
 
@@ -109,6 +109,16 @@ dependency-free, auditable in one file, and usable offline. It's cross-checked a
 Charter ✓ → Data Model ✓ → Schema ✓ → Fixtures ✓ → Validator ✓ → Reference tool ✓
 
 EvidenceRail v0.1 is feature-complete for the current release scope. Further changes should be limited to verified defects, interoperability improvements, or documented release requirements.
+
+## Relationship to Michvi LLP
+
+EvidenceRail is an open-source public contribution maintained separately from
+Michvi LLP's confidential advisory engagements and internal methodologies.
+
+## Attribution
+
+Created and maintained by Shikhar Jha. Published as an open-source public
+contribution by Michvi LLP.
 
 ## License
 
