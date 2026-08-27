@@ -1,0 +1,43 @@
+{
+  "description": "Scheduled age reassessment fires, no change yet. Supporting CER \u2014 anchors ROR-03's correction scenario.",
+  "expect": "valid",
+  "record_kind": "cer",
+  "record": {
+    "record_id": "01J8ZC-CER-RA-006",
+    "record_type": "control_evidence_record",
+    "schema_version": "0.1.0",
+    "timestamp": "2026-08-22T08:00:00.000Z",
+    "age_state": {
+      "age_band": "13_15",
+      "age_assurance_confidence": "self_declared"
+    },
+    "control_context": {
+      "control_id": "feature_parental_gate",
+      "control_version": "1.1.0",
+      "policy_id": "us-ca-minors-policy",
+      "policy_version": "2.0.0",
+      "jurisdiction": "US-CA"
+    },
+    "trigger": {
+      "type": "age_reassessment_triggered",
+      "context": {
+        "previous_signal_state": "self_declared",
+        "signal_state": "self_declared"
+      }
+    },
+    "action": {
+      "action_type": "no_action_policy_permitted",
+      "action_scope": "feature"
+    },
+    "review": {
+      "review_available": true,
+      "review_mechanism_reference": "guardian-consent-flow-v2"
+    },
+    "evidence_metadata": {
+      "source_system_id": "platform-trust-safety-svc",
+      "recorded_at": "2026-08-22T08:00:00.000Z",
+      "hash_canonicalization_method": "JCS-1.0",
+      "record_hash": "sha256:e494856715b920f9a9b09a9820e0b625039a58adae10c3faec45b4f2b5aa1d78"
+    }
+  }
+}

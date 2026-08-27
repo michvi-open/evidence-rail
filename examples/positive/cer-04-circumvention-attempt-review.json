@@ -1,0 +1,44 @@
+{
+  "description": "Repeated age-check circumvention pattern -> escalated for manual review.",
+  "expect": "valid",
+  "record_kind": "cer",
+  "record": {
+    "record_id": "01J8ZC-CER-CV-004",
+    "record_type": "control_evidence_record",
+    "schema_version": "0.1.0",
+    "timestamp": "2026-08-21T12:45:09.310Z",
+    "age_state": {
+      "age_band": "under_16",
+      "age_assurance_confidence": "self_declared"
+    },
+    "control_context": {
+      "control_id": "account_access_restriction",
+      "control_version": "3.2.0",
+      "policy_id": "au-smma-policy",
+      "policy_version": "1.4.0",
+      "jurisdiction": "AU"
+    },
+    "trigger": {
+      "type": "circumvention_attempt_detected",
+      "context": {
+        "pattern_category": "repeated_reattempt",
+        "attempt_count": 6,
+        "detection_confidence": "high"
+      }
+    },
+    "action": {
+      "action_type": "escalated_for_manual_review",
+      "action_scope": "account"
+    },
+    "review": {
+      "review_available": true,
+      "review_mechanism_reference": "trust-safety-manual-queue"
+    },
+    "evidence_metadata": {
+      "source_system_id": "platform-trust-safety-svc",
+      "recorded_at": "2026-08-21T12:45:09.310Z",
+      "hash_canonicalization_method": "JCS-1.0",
+      "record_hash": "sha256:ad1328656d08d169eea0fdb8848a203a8fdb6c1563a9ab95b2b0b8af022e528e"
+    }
+  }
+}

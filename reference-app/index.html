@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EvidenceRail — Reference Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F5F2; --panel:#FFFFFF; --ink:#191C20; --ink-muted:#5B6069;
+    --accent:#24425F; --accent-soft:#E8EDF2; --line:#D9D8D2;
+    --valid:#2F6B4F; --valid-soft:#E6F0EA; --invalid:#A13E3E; --invalid-soft:#F5E9E7;
+    --mono-bg:#14171B; --mono-ink:#DCE1E6; --mono-accent:#8FB8DE;
+    --radius:3px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink);
+    font-family:'IBM Plex Sans',sans-serif; font-size:14px; line-height:1.5;}
+  h1,h2,h3{font-family:'Source Serif 4',serif; font-weight:600; margin:0;}
+  code, .mono, input, select, textarea, pre{font-family:'IBM Plex Mono',monospace;}
+  a{color:var(--accent);}
+
+  header{border-bottom:1px solid var(--line); padding:20px 28px; display:flex;
+    align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  header .wordmark{display:flex; align-items:baseline; gap:12px;}
+  header h1{font-size:22px; letter-spacing:-0.01em;}
+  header .tag{font-size:11px; color:var(--ink-muted); border:1px solid var(--line);
+    border-radius:var(--radius); padding:3px 8px; text-transform:uppercase; letter-spacing:.04em;}
+  header .desc{font-size:12.5px; color:var(--ink-muted); max-width:460px;}
+  header button.demo{background:var(--accent); color:#fff; border:none; border-radius:var(--radius);
+    padding:9px 14px; font-family:'IBM Plex Sans',sans-serif; font-size:13px; font-weight:500;
+    cursor:pointer;}
+  header button.demo:hover{background:#1b3350;}
+
+  nav{display:flex; border-bottom:1px solid var(--line); padding:0 28px; gap:2px;
+    background:var(--panel); overflow-x:auto;}
+  nav button{background:none; border:none; padding:13px 16px; font-family:'IBM Plex Sans',sans-serif;
+    font-size:13.5px; color:var(--ink-muted); cursor:pointer; border-bottom:2px solid transparent;
+    white-space:nowrap;}
+  nav button.active{color:var(--ink); border-bottom-color:var(--accent); font-weight:500;}
+  nav button:hover{color:var(--ink);}
+
+  main{padding:24px 28px 60px; max-width:1180px; margin:0 auto;}
+  .screen{display:none;}
+  .screen.active{display:block;}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:22px;}
+  @media (max-width:880px){.grid2{grid-template-columns:1fr;}}
+
+  .panel{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:18px 20px;}
+  .panel + .panel{margin-top:16px;}
+  .panel h2{font-size:15px; margin-bottom:4px;}
+  .panel .sub{font-size:12px; color:var(--ink-muted); margin-bottom:14px;}
+
+  .field{margin-bottom:12px;}
+  .field label{display:block; font-size:11.5px; color:var(--ink-muted); margin-bottom:4px;
+    text-transform:uppercase; letter-spacing:.03em;}
+  .field .hint{font-size:11px; color:var(--ink-muted); margin-top:3px;}
+  input[type=text], input[type=number], select, textarea{
+    width:100%; padding:8px 9px; border:1px solid var(--line); border-radius:var(--radius);
+    font-size:13px; background:#fff; color:var(--ink);}
+  textarea{min-height:110px; resize:vertical;}
+  .row2{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .checkrow{display:flex; align-items:center; gap:8px; margin-bottom:12px;}
+  .checkrow input{width:auto;}
+  .checkrow label{font-size:13px; color:var(--ink); text-transform:none;}
+
+  button.primary{background:var(--accent); color:#fff; border:none; border-radius:var(--radius);
+    padding:9px 16px; font-family:'IBM Plex Sans',sans-serif; font-size:13px; font-weight:500;
+    cursor:pointer; margin-right:8px;}
+  button.primary:hover{background:#1b3350;}
+  button.secondary{background:none; border:1px solid var(--line); color:var(--ink);
+    border-radius:var(--radius); padding:8px 15px; font-family:'IBM Plex Sans',sans-serif;
+    font-size:13px; cursor:pointer; margin-right:8px;}
+  button.secondary:hover{border-color:var(--accent); color:var(--accent);}
+
+  .status{display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-weight:500;
+    padding:5px 10px; border-radius:var(--radius); margin-bottom:10px;}
+  .status.valid{background:var(--valid-soft); color:var(--valid);}
+  .status.invalid{background:var(--invalid-soft); color:var(--invalid);}
+  .status .dot{width:7px; height:7px; border-radius:50%; background:currentColor;}
+
+  .errors{font-size:12.5px; color:var(--invalid); margin:0 0 10px; padding-left:18px;}
+  .errors li{margin-bottom:3px;}
+
+  pre.json{background:var(--mono-bg); color:var(--mono-ink); padding:14px 16px; border-radius:var(--radius);
+    font-size:12px; overflow-x:auto; max-height:420px; white-space:pre-wrap; word-break:break-word;}
+  pre.json .k{color:var(--mono-accent);}
+
+  .out-actions{display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;}
+
+  /* Evidence chain */
+  .chain{display:flex; flex-direction:column; align-items:center; padding:20px 0 8px;}
+  .chain-step{width:100%; max-width:560px; background:var(--panel); border:1px solid var(--line);
+    border-left:4px solid var(--accent); border-radius:var(--radius); padding:14px 18px; margin-bottom:0;
+    opacity:0; transform:translateY(6px); animation:stepIn .4s ease forwards;}
+  .chain-step.outcome{border-left-color:var(--valid);}
+  .chain-step .label{font-size:11px; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.04em; margin-bottom:3px;}
+  .chain-step .value{font-size:14.5px; font-weight:500;}
+  .chain-step .value .mono{font-size:13px; font-weight:400; color:var(--ink-muted);}
+  .connector{width:1px; height:22px; background:var(--line);}
+  .connector::after{content:'▾'; display:block; text-align:center; color:var(--ink-muted);
+    font-size:10px; margin-top:14px; margin-left:-4px;}
+  .integrity{margin-top:18px; width:100%; max-width:560px; text-align:center; padding:10px;
+    border-radius:var(--radius); font-size:12.5px; font-weight:500;}
+  .integrity.ok{background:var(--valid-soft); color:var(--valid);}
+  .integrity.bad{background:var(--invalid-soft); color:var(--invalid);}
+  @keyframes stepIn{to{opacity:1; transform:translateY(0);}}
+  @media (prefers-reduced-motion:reduce){.chain-step{animation:none; opacity:1; transform:none;}}
+
+  .empty{color:var(--ink-muted); font-size:13px; text-align:center; padding:36px 20px;}
+  .footnote{font-size:11.5px; color:var(--ink-muted); margin-top:26px; border-top:1px solid var(--line);
+    padding-top:14px; line-height:1.6;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wordmark">
+    <h1>EvidenceRail</h1>
+    <span class="tag">Working name · pending trademark clearance</span>
+  </div>
+  <button class="demo" id="loadDemoBtn">Load demo scenario</button>
+</header>
+
+<nav>
+  <button class="tab active" data-screen="create-cer">Create Control Evidence Record</button>
+  <button class="tab" data-screen="create-ror">Create Review/Outcome Record</button>
+  <button class="tab" data-screen="validate">Validate Existing Record</button>
+  <button class="tab" data-screen="chain">View Linked Evidence Chain</button>
+</nav>
+
+<main>
+
+  <!-- SCREEN 1: Create CER -->
+  <section class="screen active" id="screen-create-cer">
+    <div class="grid2">
+      <div>
+        <div class="panel">
+          <h2>Age state</h2>
+          <div class="sub">The age-band and confidence tier a control evaluated against.</div>
+          <div class="row2">
+            <div class="field"><label>Age band</label>
+              <select id="cer-age_band"></select></div>
+            <div class="field"><label>Age-assurance confidence</label>
+              <select id="cer-age_confidence"></select></div>
+          </div>
+          <div class="field"><label>Age-assurance reference (optional)</label>
+            <input type="text" id="cer-age_ref" placeholder="e.g. ageaware-tok-8f3d2a"></div>
+        </div>
+
+        <div class="panel">
+          <h2>Control context</h2>
+          <div class="row2">
+            <div class="field"><label>Control ID</label><input type="text" id="cer-control_id" placeholder="account_access_restriction"></div>
+            <div class="field"><label>Control version</label><input type="text" id="cer-control_version" placeholder="3.2.0"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label>Policy ID</label><input type="text" id="cer-policy_id" placeholder="au-smma-policy"></div>
+            <div class="field"><label>Policy version</label><input type="text" id="cer-policy_version" placeholder="1.4.0"></div>
+          </div>
+          <div class="field"><label>Jurisdiction</label><input type="text" id="cer-jurisdiction" placeholder="AU"></div>
+        </div>
+
+        <div class="panel">
+          <h2>Trigger</h2>
+          <div class="field"><label>Trigger type</label><select id="cer-trigger_type"></select></div>
+          <div id="cer-trigger_context_fields"></div>
+        </div>
+
+        <div class="panel">
+          <h2>Action</h2>
+          <div class="row2">
+            <div class="field"><label>Action type</label><select id="cer-action_type"></select></div>
+            <div class="field"><label>Action scope</label><select id="cer-action_scope"></select></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Review</h2>
+          <div class="checkrow"><input type="checkbox" id="cer-review_available" checked>
+            <label for="cer-review_available">Review/appeal mechanism available</label></div>
+          <div class="field"><label>Review mechanism reference (optional)</label>
+            <input type="text" id="cer-review_ref" placeholder="guardian-appeal-v1"></div>
+        </div>
+
+        <div class="panel">
+          <h2>Evidence metadata</h2>
+          <div class="field"><label>Source system ID</label>
+            <input type="text" id="cer-source_system" placeholder="platform-trust-safety-svc"></div>
+          <div class="hint">record_id, timestamps, and record_hash are generated automatically —
+            the hash is a real SHA-256 over the canonicalized record, computed in your browser.</div>
+        </div>
+
+        <button class="primary" id="cer-build-btn">Build record</button>
+      </div>
+
+      <div>
+        <div class="panel">
+          <h2>Output</h2>
+          <div class="sub">Rebuilds and re-validates automatically as you edit the form.</div>
+          <div id="cer-status"></div>
+          <ul class="errors" id="cer-errors"></ul>
+          <pre class="json" id="cer-output">—</pre>
+          <div class="out-actions">
+            <button class="secondary" id="cer-download-json">Download JSON</button>
+            <button class="secondary" id="cer-download-md">Download Markdown</button>
+            <button class="secondary" id="cer-use-for-ror">Use as base for a ROR →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 2: Create ROR -->
+  <section class="screen" id="screen-create-ror">
+    <div class="grid2">
+      <div>
+        <div class="panel">
+          <h2>Linked Control Evidence Record</h2>
+          <div class="sub">Paste the CER this review pertains to, or build one on the previous screen and use
+            "Use as base for a ROR". linked_record_hash is recomputed from what you paste — it is not
+            re-typed by hand.</div>
+          <div class="field"><label>CER JSON</label>
+            <textarea id="ror-linked-cer" placeholder="Paste a full Control Evidence Record JSON here…"></textarea></div>
+          <div class="hint" id="ror-linked-status">No CER loaded yet.</div>
+        </div>
+
+        <div class="panel">
+          <h2>Review detail</h2>
+          <div class="row2">
+            <div class="field"><label>Review initiator</label><select id="ror-initiator"></select></div>
+            <div class="field"><label>Review status</label><select id="ror-status"></select></div>
+          </div>
+          <div class="field"><label>Outcome action (optional — only if state changed)</label>
+            <select id="ror-outcome_action"><option value="">— none —</option></select></div>
+        </div>
+
+        <div class="panel">
+          <h2>Evidence metadata</h2>
+          <div class="field"><label>Source system ID</label>
+            <input type="text" id="ror-source_system" placeholder="platform-trust-safety-svc"></div>
+        </div>
+
+        <button class="primary" id="ror-build-btn">Build record</button>
+      </div>
+
+      <div>
+        <div class="panel">
+          <h2>Output</h2>
+          <div id="ror-status-box"></div>
+          <ul class="errors" id="ror-errors"></ul>
+          <pre class="json" id="ror-output">—</pre>
+          <div class="out-actions">
+            <button class="secondary" id="ror-download-json">Download JSON</button>
+            <button class="secondary" id="ror-download-md">Download Markdown</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 3: Validate -->
+  <section class="screen" id="screen-validate">
+    <div class="grid2">
+      <div>
+        <div class="panel">
+          <h2>Paste a record</h2>
+          <div class="sub">A Control Evidence Record or a Review/Outcome Record — the tool detects
+            which from <code>record_type</code>.</div>
+          <textarea id="val-input" style="min-height:360px;" placeholder="Paste a CER or ROR JSON here…"></textarea>
+          <div style="margin-top:12px;"><button class="primary" id="val-run-btn">Validate</button></div>
+        </div>
+      </div>
+      <div>
+        <div class="panel">
+          <h2>Result</h2>
+          <div id="val-status"></div>
+          <ul class="errors" id="val-errors"></ul>
+          <div class="hint" id="val-empty-hint">Validation checks required fields, closed vocabularies,
+            trigger→context routing, and field shapes — the same rules encoded in schema/*.schema.json.
+            It does not recompute cryptographic hashes here; use the chain view for hash verification.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREEN 4: Chain -->
+  <section class="screen" id="screen-chain">
+    <div class="panel">
+      <h2>Linked evidence chain</h2>
+      <div class="sub">Builds automatically from records you've created in this session, or load the flagship
+        demo scenario above.</div>
+      <div id="chain-container"><div class="empty">No records yet. Build a Control Evidence Record, then a
+        linked Review/Outcome Record, or click "Load demo scenario".</div></div>
+    </div>
+  </section>
+
+  <div class="footnote">
+    EvidenceRail is a working name, pending final trademark clearance. This reference tool runs entirely
+    in your browser — no login, no server, no database, and no child identity or content is ever collected
+    or transmitted. It is not an age-verification system, a moderation engine, a parental-monitoring tool,
+    or a compliance-certification service — see the project charter for full non-goals.
+  </div>
+</main>
+
+<script>
+// ---------------------------------------------------------------------------
+// Vocabularies — mirror schema/common.schema.json and schema/trigger-context/*
+// exactly. This is a purpose-built validator for EvidenceRail's own bounded
+// schema, not a generic JSON Schema engine — deliberate, to keep this
+// reference tool dependency-free and auditable in one file.
+// ---------------------------------------------------------------------------
+const AGE_BAND = ["under_13","13_15","under_16","16_17","adult","unknown"];
+const AGE_CONF = ["unassured","self_declared","standard","enhanced","high_confidence"];
+const AGE_METHOD_HINT = ["self_declaration","estimation","verification","platform_signal","unknown"];
+const TRIGGER_TYPES = [
+  "age_signal_threshold","age_assurance_state_change","parental_consent_required",
+  "parental_consent_revoked","jurisdiction_change_detected","circumvention_attempt_detected",
+  "cross_platform_age_signal_received","age_reassessment_triggered",
+  "account_reinstatement_request","manual_flag"
+];
+const ACTION_TYPES = [
+  "account_restricted","account_suspended","account_removed","feature_gated","feature_unlocked",
+  "consent_requested","consent_confirmed","access_denied","access_reinstated",
+  "escalated_for_manual_review","no_action_policy_permitted"
+];
+const ACTION_SCOPE = ["account","feature","session","access_path"];
+const REVIEW_INITIATOR = ["user","guardian","platform","regulator"];
+const REVIEW_STATUS = ["pending","upheld","overturned","partially_overturned","withdrawn"];
+
+// trigger.type -> which trigger-context field group applies
+const TRIGGER_CONTEXT_GROUP = {
+  age_signal_threshold: "age-threshold",
+  age_assurance_state_change: "age-threshold",
+  cross_platform_age_signal_received: "age-threshold",
+  age_reassessment_triggered: "age-threshold",
+  parental_consent_required: "parental-consent",
+  parental_consent_revoked: "parental-consent",
+  jurisdiction_change_detected: "jurisdiction",
+  circumvention_attempt_detected: "circumvention",
+  account_reinstatement_request: "account-state",
+  manual_flag: "account-state",
+};
+
+const CONTEXT_FIELDS = {
+  "age-threshold": [
+    {key:"threshold", label:"Threshold", type:"select", options:AGE_BAND},
+    {key:"signal_state", label:"Signal state", type:"select", options:AGE_CONF},
+    {key:"previous_signal_state", label:"Previous signal state", type:"select", options:AGE_CONF},
+    {key:"signal_source", label:"Signal source", type:"select",
+      options:["platform_internal","os_level_signal","app_store_signal","third_party_provider","unspecified"]},
+  ],
+  "parental-consent": [
+    {key:"consent_mechanism", label:"Consent mechanism", type:"select",
+      options:["email","qr_code","otp","id_verification","other"]},
+    {key:"consent_scope", label:"Consent scope", type:"select", options:["account","feature","unspecified"]},
+    {key:"revocation_reason_category", label:"Revocation reason category", type:"select",
+      options:["guardian_request","policy_expiry","platform_initiated","unspecified"]},
+  ],
+  "jurisdiction": [
+    {key:"previous_jurisdiction", label:"Previous jurisdiction", type:"text", placeholder:"US"},
+    {key:"new_jurisdiction", label:"New jurisdiction", type:"text", placeholder:"AU"},
+    {key:"detection_method", label:"Detection method", type:"select",
+      options:["ip_signal","account_setting","platform_signal","unspecified"]},
+  ],
+  "circumvention": [
+    {key:"pattern_category", label:"Pattern category", type:"select",
+      options:["repeated_reattempt","proxy_vpn_signal","falsified_input_pattern","device_signal_mismatch","other"]},
+    {key:"attempt_count", label:"Attempt count", type:"number", placeholder:"7"},
+    {key:"detection_confidence", label:"Detection confidence", type:"select", options:["low","medium","high"]},
+  ],
+  "account-state": [
+    {key:"request_source", label:"Request source", type:"select",
+      options:["user","guardian","platform_support","regulator"]},
+    {key:"flag_reason_category", label:"Flag reason category", type:"select",
+      options:["manual_review_request","regulator_inquiry","guardian_escalation","other"]},
+  ],
+};
+
+// ---------------------------------------------------------------------------
+// Canonicalization + real SHA-256 (Web Crypto) — matches the Python fixture
+// generator: sorted keys, no whitespace. record_hash covers the full record
+// EXCLUDING only evidence_metadata.record_hash itself (not the whole
+// evidence_metadata block) — the spec-correct rule.
+// ---------------------------------------------------------------------------
+function canonicalize(value){
+  if (value === null || typeof value !== "object") return JSON.stringify(value);
+  if (Array.isArray(value)) return "[" + value.map(canonicalize).join(",") + "]";
+  const keys = Object.keys(value).sort();
+  return "{" + keys.map(k => JSON.stringify(k) + ":" + canonicalize(value[k])).join(",") + "}";
+}
+async function sha256Hex(str){
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,"0")).join("");
+}
+async function computeRecordHash(record){
+  const clone = JSON.parse(JSON.stringify(record));
+  if (clone.evidence_metadata) delete clone.evidence_metadata.record_hash;
+  return "sha256:" + await sha256Hex(canonicalize(clone));
+}
+function genId(prefix){
+  const t = Date.now().toString(36).toUpperCase();
+  const r = Math.random().toString(36).slice(2,8).toUpperCase();
+  return `${prefix}-${t}-${r}`;
+}
+function nowISO(){ return new Date().toISOString().replace(/\.\d+Z$/, m => m); }
+
+// ---------------------------------------------------------------------------
+// Validators — mirror schema/cer.schema.json and schema/ror.schema.json.
+// additionalProperties:false is simulated by checking Object.keys() against
+// an explicit allow-list at every level, same enforcement principle as the
+// JSON Schema files, expressed directly in JS.
+// ---------------------------------------------------------------------------
+function isPlainObject(v){ return v !== null && typeof v === "object" && !Array.isArray(v); }
+function checkAllowedKeys(obj, allowed, path, errors){
+  Object.keys(obj).forEach(k => { if (!allowed.includes(k)) errors.push(`${path}: unexpected field "${k}"`); });
+}
+function checkRequired(obj, required, path, errors){
+  required.forEach(k => { if (!(k in obj)) errors.push(`${path}: missing required field "${k}"`); });
+}
+function checkEnum(obj, key, allowed, path, errors){
+  if (key in obj && !allowed.includes(obj[key])) errors.push(`${path}.${key}: "${obj[key]}" is not an allowed value`);
+}
+const RE_RECORD_ID = /^[A-Za-z0-9_-]{8,64}$/;
+const RE_SEMVER = /^\d+\.\d+\.\d+$/;
+const RE_HASH = /^[a-z0-9-]+:[a-f0-9]+$/;
+const RE_JURISDICTION = /^[A-Z]{2}(-[A-Z0-9]{1,3})?$/;
+
+function validateEvidenceMetadata(obj, path, errors){
+  if (!isPlainObject(obj)){ errors.push(`${path}: evidence_metadata must be an object`); return; }
+  checkRequired(obj, ["source_system_id","recorded_at","record_hash","hash_canonicalization_method"], `${path}.evidence_metadata`, errors);
+  checkAllowedKeys(obj, ["source_system_id","verifier_id","recorded_at","record_hash",
+    "hash_canonicalization_method","signing_key_reference","signature","previous_record_hash"],
+    `${path}.evidence_metadata`, errors);
+  if (obj.record_hash && !RE_HASH.test(obj.record_hash))
+    errors.push(`${path}.evidence_metadata.record_hash: does not match "<algorithm>:<digest>" shape`);
+  if (obj.previous_record_hash && !RE_HASH.test(obj.previous_record_hash))
+    errors.push(`${path}.evidence_metadata.previous_record_hash: does not match "<algorithm>:<digest>" shape`);
+}
+
+function validateCER(record){
+  const errors = [];
+  if (!isPlainObject(record)){ return {valid:false, errors:["record must be a JSON object"]}; }
+  checkRequired(record, ["record_id","record_type","schema_version","timestamp","age_state",
+    "control_context","trigger","action","review","evidence_metadata"], "CER", errors);
+  checkAllowedKeys(record, ["record_id","record_type","schema_version","timestamp","age_state",
+    "control_context","trigger","action","review","evidence_metadata","external_references"], "CER", errors);
+
+  if (record.record_type !== undefined && record.record_type !== "control_evidence_record")
+    errors.push(`CER.record_type: must be "control_evidence_record"`);
+  if (record.record_id && !RE_RECORD_ID.test(record.record_id)) errors.push("CER.record_id: invalid shape");
+  if (record.schema_version && !RE_SEMVER.test(record.schema_version)) errors.push("CER.schema_version: invalid shape");
+
+  if (isPlainObject(record.age_state)){
+    checkRequired(record.age_state, ["age_band","age_assurance_confidence"], "CER.age_state", errors);
+    checkAllowedKeys(record.age_state, ["age_band","age_assurance_confidence","age_assurance_reference",
+      "age_assurance_method_hint"], "CER.age_state", errors);
+    checkEnum(record.age_state, "age_band", AGE_BAND, "CER.age_state", errors);
+    checkEnum(record.age_state, "age_assurance_confidence", AGE_CONF, "CER.age_state", errors);
+    checkEnum(record.age_state, "age_assurance_method_hint", AGE_METHOD_HINT, "CER.age_state", errors);
+  } else if (record.age_state !== undefined) errors.push("CER.age_state: must be an object");
+
+  if (isPlainObject(record.control_context)){
+    checkRequired(record.control_context, ["control_id","control_version","policy_id","policy_version","jurisdiction"],
+      "CER.control_context", errors);
+    checkAllowedKeys(record.control_context, ["control_id","control_version","policy_id","policy_version",
+      "jurisdiction","policy_document_reference"], "CER.control_context", errors);
+    if (record.control_context.control_version && !RE_SEMVER.test(record.control_context.control_version))
+      errors.push("CER.control_context.control_version: invalid shape");
+    if (record.control_context.policy_version && !RE_SEMVER.test(record.control_context.policy_version))
+      errors.push("CER.control_context.policy_version: invalid shape");
+    if (record.control_context.jurisdiction && !RE_JURISDICTION.test(record.control_context.jurisdiction))
+      errors.push("CER.control_context.jurisdiction: invalid shape");
+  } else if (record.control_context !== undefined) errors.push("CER.control_context: must be an object");
+
+  if (isPlainObject(record.trigger)){
+    checkRequired(record.trigger, ["type"], "CER.trigger", errors);
+    checkAllowedKeys(record.trigger, ["type","context"], "CER.trigger", errors);
+    if (record.trigger.type && !TRIGGER_TYPES.includes(record.trigger.type))
+      errors.push(`CER.trigger.type: "${record.trigger.type}" is outside the closed v0.1 vocabulary`);
+    if (record.trigger.context !== undefined){
+      const group = TRIGGER_CONTEXT_GROUP[record.trigger.type];
+      if (!group){
+        errors.push("CER.trigger.context: cannot validate context — trigger.type is unknown/missing");
+      } else if (!isPlainObject(record.trigger.context)){
+        errors.push("CER.trigger.context: must be an object");
+      } else {
+        const allowedKeys = CONTEXT_FIELDS[group].map(f => f.key);
+        checkAllowedKeys(record.trigger.context, allowedKeys,
+          `CER.trigger.context (as ${record.trigger.type})`, errors);
+      }
+    }
+  } else errors.push("CER.trigger: must be an object");
+
+  if (isPlainObject(record.action)){
+    checkRequired(record.action, ["action_type","action_scope"], "CER.action", errors);
+    checkAllowedKeys(record.action, ["action_type","action_scope"], "CER.action", errors);
+    checkEnum(record.action, "action_type", ACTION_TYPES, "CER.action", errors);
+    checkEnum(record.action, "action_scope", ACTION_SCOPE, "CER.action", errors);
+  } else errors.push("CER.action: must be an object");
+
+  if (isPlainObject(record.review)){
+    checkRequired(record.review, ["review_available"], "CER.review", errors);
+    checkAllowedKeys(record.review, ["review_available","review_mechanism_reference"], "CER.review", errors);
+    if (record.review.review_available !== undefined && typeof record.review.review_available !== "boolean")
+      errors.push("CER.review.review_available: must be a boolean");
+  } else errors.push("CER.review: must be an object");
+
+  validateEvidenceMetadata(record.evidence_metadata, "CER", errors);
+
+  if (record.external_references !== undefined){
+    if (!Array.isArray(record.external_references)) errors.push("CER.external_references: must be an array");
+    else record.external_references.forEach((ref,i) => {
+      checkRequired(ref, ["reference_type","reference_id"], `CER.external_references[${i}]`, errors);
+      checkAllowedKeys(ref, ["reference_type","reference_id"], `CER.external_references[${i}]`, errors);
+    });
+  }
+
+  return {valid: errors.length === 0, errors};
+}
+
+function validateROR(record){
+  const errors = [];
+  if (!isPlainObject(record)){ return {valid:false, errors:["record must be a JSON object"]}; }
+  checkRequired(record, ["record_id","record_type","schema_version","timestamp","linked_record_id",
+    "linked_record_hash","review_initiator","review_status","evidence_metadata"], "ROR", errors);
+  checkAllowedKeys(record, ["record_id","record_type","schema_version","timestamp","linked_record_id",
+    "linked_record_hash","review_initiator","review_status","outcome_action","evidence_metadata"], "ROR", errors);
+
+  if (record.record_type !== undefined && record.record_type !== "review_outcome_record")
+    errors.push(`ROR.record_type: must be "review_outcome_record"`);
+  if (record.record_id && !RE_RECORD_ID.test(record.record_id)) errors.push("ROR.record_id: invalid shape");
+  if (record.linked_record_id && !RE_RECORD_ID.test(record.linked_record_id)) errors.push("ROR.linked_record_id: invalid shape");
+  if (record.linked_record_hash && !RE_HASH.test(record.linked_record_hash)) errors.push("ROR.linked_record_hash: invalid shape");
+  checkEnum(record, "review_initiator", REVIEW_INITIATOR, "ROR", errors);
+  checkEnum(record, "review_status", REVIEW_STATUS, "ROR", errors);
+  if (record.outcome_action !== undefined) checkEnum(record, "outcome_action", ACTION_TYPES, "ROR", errors);
+
+  validateEvidenceMetadata(record.evidence_metadata, "ROR", errors);
+  return {valid: errors.length === 0, errors};
+}
+
+// ---------------------------------------------------------------------------
+// UI wiring
+// ---------------------------------------------------------------------------
+function fillSelect(el, options, placeholder){
+  el.innerHTML = "";
+  if (placeholder){ const o=document.createElement("option"); o.value=""; o.textContent=placeholder; el.appendChild(o); }
+  options.forEach(v => { const o=document.createElement("option"); o.value=v; o.textContent=v; el.appendChild(o); });
+}
+fillSelect(document.getElementById("cer-age_band"), AGE_BAND);
+fillSelect(document.getElementById("cer-age_confidence"), AGE_CONF);
+fillSelect(document.getElementById("cer-trigger_type"), TRIGGER_TYPES);
+fillSelect(document.getElementById("cer-action_type"), ACTION_TYPES);
+fillSelect(document.getElementById("cer-action_scope"), ACTION_SCOPE);
+fillSelect(document.getElementById("ror-initiator"), REVIEW_INITIATOR);
+fillSelect(document.getElementById("ror-status"), REVIEW_STATUS);
+ACTION_TYPES.forEach(v => { const o=document.createElement("option"); o.value=v; o.textContent=v;
+  document.getElementById("ror-outcome_action").appendChild(o); });
+
+function renderTriggerContextFields(){
+  const type = document.getElementById("cer-trigger_type").value;
+  const group = TRIGGER_CONTEXT_GROUP[type];
+  const container = document.getElementById("cer-trigger_context_fields");
+  container.innerHTML = "";
+  if (!group) return;
+  const wrap = document.createElement("div");
+  wrap.innerHTML = `<div class="hint" style="margin:8px 0;">Context fields for "${type}" (all optional):</div>`;
+  CONTEXT_FIELDS[group].forEach(f => {
+    const field = document.createElement("div"); field.className = "field";
+    const label = document.createElement("label"); label.textContent = f.label; field.appendChild(label);
+    let input;
+    if (f.type === "select"){ input = document.createElement("select"); fillSelect(input, f.options, "— unset —"); }
+    else { input = document.createElement("input"); input.type = f.type; if (f.placeholder) input.placeholder = f.placeholder; }
+    input.id = "cer-ctx-" + f.key;
+    field.appendChild(input);
+    wrap.appendChild(field);
+  });
+  container.appendChild(wrap);
+}
+document.getElementById("cer-trigger_type").addEventListener("change", renderTriggerContextFields);
+renderTriggerContextFields();
+
+function val(id){ const el = document.getElementById(id); return el.value.trim(); }
+function checked(id){ return document.getElementById(id).checked; }
+
+async function buildCER(){
+  const group = TRIGGER_CONTEXT_GROUP[val("cer-trigger_type")];
+  const context = {};
+  if (group) CONTEXT_FIELDS[group].forEach(f => {
+    const v = val("cer-ctx-" + f.key);
+    if (v !== "") context[f.key] = f.type === "number" ? Number(v) : v;
+  });
+
+  const ts = nowISO();
+  const record = {
+    record_id: genId("ER-CER"),
+    record_type: "control_evidence_record",
+    schema_version: "0.1.0",
+    timestamp: ts,
+    age_state: {
+      age_band: val("cer-age_band"),
+      age_assurance_confidence: val("cer-age_confidence"),
+      ...(val("cer-age_ref") ? {age_assurance_reference: val("cer-age_ref")} : {}),
+    },
+    control_context: {
+      control_id: val("cer-control_id"),
+      control_version: val("cer-control_version"),
+      policy_id: val("cer-policy_id"),
+      policy_version: val("cer-policy_version"),
+      jurisdiction: val("cer-jurisdiction"),
+    },
+    trigger: { type: val("cer-trigger_type"), ...(Object.keys(context).length ? {context} : {}) },
+    action: { action_type: val("cer-action_type"), action_scope: val("cer-action_scope") },
+    review: {
+      review_available: checked("cer-review_available"),
+      ...(val("cer-review_ref") ? {review_mechanism_reference: val("cer-review_ref")} : {}),
+    },
+    evidence_metadata: {
+      source_system_id: val("cer-source_system") || "unspecified-source",
+      recorded_at: ts,
+      hash_canonicalization_method: "JCS-1.0",
+    },
+  };
+  record.evidence_metadata.record_hash = await computeRecordHash(record);
+  return record;
+}
+
+function renderJSON(el, obj){ el.textContent = JSON.stringify(obj, null, 2); }
+function renderStatus(el, result){
+  el.innerHTML = result.valid
+    ? `<div class="status valid"><span class="dot"></span>Valid</div>`
+    : `<div class="status invalid"><span class="dot"></span>Invalid — ${result.errors.length} issue(s)</div>`;
+}
+function renderErrors(el, errors){ el.innerHTML = errors.map(e => `<li>${e}</li>`).join(""); }
+function download(filename, content, mime){
+  const blob = new Blob([content], {type: mime});
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+}
+function recordToMarkdown(record, title){
+  const lines = [`# ${title}`, "", "```json", JSON.stringify(record, null, 2), "```"];
+  return lines.join("\n");
+}
+
+let lastCER = null, lastROR = null;
+
+async function runCERBuild(){
+  lastCER = await buildCER();
+  renderJSON(document.getElementById("cer-output"), lastCER);
+  const result = validateCER(lastCER);
+  renderStatus(document.getElementById("cer-status"), result);
+  renderErrors(document.getElementById("cer-errors"), result.errors);
+}
+document.getElementById("cer-build-btn").addEventListener("click", runCERBuild);
+document.getElementById("cer-download-json").addEventListener("click", () => {
+  if (lastCER) download(`${lastCER.record_id}.json`, JSON.stringify(lastCER, null, 2), "application/json");
+});
+document.getElementById("cer-download-md").addEventListener("click", () => {
+  if (lastCER) download(`${lastCER.record_id}.md`, recordToMarkdown(lastCER, "Control Evidence Record"), "text/markdown");
+});
+document.getElementById("cer-use-for-ror").addEventListener("click", () => {
+  if (!lastCER) return;
+  document.getElementById("ror-linked-cer").value = JSON.stringify(lastCER, null, 2);
+  switchScreen("create-ror");
+  updateLinkedCERStatus();
+});
+
+async function updateLinkedCERStatus(){
+  const raw = val("ror-linked-cer");
+  const statusEl = document.getElementById("ror-linked-status");
+  if (!raw){ statusEl.textContent = "No CER loaded yet."; return null; }
+  try {
+    const cer = JSON.parse(raw);
+    const hash = await computeRecordHash(cer);
+    const matches = cer.evidence_metadata && cer.evidence_metadata.record_hash === hash;
+    statusEl.innerHTML = matches
+      ? `Linked to <span class="mono">${cer.record_id}</span> — hash verified.`
+      : `Linked to <span class="mono">${cer.record_id || "?"}</span> — recomputed hash does not match
+         the CER's stored record_hash. It will still be used as pasted, but flag this before treating it
+         as tamper-evident.`;
+    return {cer, hash};
+  } catch(e){ statusEl.textContent = "Could not parse this as JSON yet."; return null; }
+}
+document.getElementById("ror-linked-cer").addEventListener("input", updateLinkedCERStatus);
+
+async function runRORBuild(){
+  const linked = await updateLinkedCERStatus();
+  const ts = nowISO();
+  const record = {
+    record_id: genId("ER-ROR"),
+    record_type: "review_outcome_record",
+    schema_version: "0.1.0",
+    timestamp: ts,
+    linked_record_id: linked ? linked.cer.record_id : "",
+    linked_record_hash: linked ? linked.cer.evidence_metadata.record_hash : "",
+    review_initiator: val("ror-initiator"),
+    review_status: val("ror-status"),
+    ...(val("ror-outcome_action") ? {outcome_action: val("ror-outcome_action")} : {}),
+    evidence_metadata: {
+      source_system_id: val("ror-source_system") || "unspecified-source",
+      recorded_at: ts,
+      hash_canonicalization_method: "JCS-1.0",
+    },
+  };
+  record.evidence_metadata.record_hash = await computeRecordHash(record);
+  lastROR = record;
+  renderJSON(document.getElementById("ror-output"), record);
+  const result = validateROR(record);
+  renderStatus(document.getElementById("ror-status-box"), result);
+  renderErrors(document.getElementById("ror-errors"), result.errors);
+}
+document.getElementById("ror-build-btn").addEventListener("click", runRORBuild);
+document.getElementById("ror-download-json").addEventListener("click", () => {
+  if (lastROR) download(`${lastROR.record_id}.json`, JSON.stringify(lastROR, null, 2), "application/json");
+});
+document.getElementById("ror-download-md").addEventListener("click", () => {
+  if (lastROR) download(`${lastROR.record_id}.md`, recordToMarkdown(lastROR, "Review/Outcome Record"), "text/markdown");
+});
+
+document.getElementById("val-run-btn").addEventListener("click", () => {
+  const statusEl = document.getElementById("val-status");
+  const errorsEl = document.getElementById("val-errors");
+  document.getElementById("val-empty-hint").style.display = "none";
+  let record;
+  try { record = JSON.parse(val("val-input")); }
+  catch(e){
+    statusEl.innerHTML = `<div class="status invalid"><span class="dot"></span>Invalid — not parseable JSON</div>`;
+    errorsEl.innerHTML = `<li>${e.message}</li>`;
+    return;
+  }
+  let result;
+  if (record && record.record_type === "review_outcome_record") result = validateROR(record);
+  else if (record && record.record_type === "control_evidence_record") result = validateCER(record);
+  else { result = {valid:false, errors:['record_type must be "control_evidence_record" or "review_outcome_record"']}; }
+  renderStatus(statusEl, result);
+  renderErrors(errorsEl, result.errors);
+});
+
+// ---------------------------------------------------------------------------
+// Chain view — the signature moment. Recomputes the CER's hash to show a
+// genuine (not cosmetic) integrity check.
+// ---------------------------------------------------------------------------
+async function renderChain(cer, rors){
+  const container = document.getElementById("chain-container");
+  container.innerHTML = "";
+  if (!cer){ container.innerHTML = `<div class="empty">No records yet. Build a Control Evidence Record,
+    then a linked Review/Outcome Record, or click "Load demo scenario".</div>`; return; }
+
+  const chain = document.createElement("div"); chain.className = "chain";
+  const steps = [
+    ["Age state", `${cer.age_state.age_band} · ${cer.age_state.age_assurance_confidence}`],
+    ["Control", `${cer.control_context.control_id} v${cer.control_context.control_version}
+      (${cer.control_context.jurisdiction})`],
+    ["Trigger", cer.trigger.type.replace(/_/g," ")],
+    ["Action", `${cer.action.action_type.replace(/_/g," ")} · scope: ${cer.action.action_scope}`],
+    ["Review", cer.review.review_available ? "Available" : "Not available"],
+  ];
+  steps.forEach(([label, value], i) => {
+    const step = document.createElement("div"); step.className = "chain-step";
+    step.style.animationDelay = (i*90)+"ms";
+    step.innerHTML = `<div class="label">${label}</div><div class="value">${value}</div>`;
+    chain.appendChild(step);
+    if (i < steps.length - 1 || rors.length){ const c = document.createElement("div"); c.className="connector"; chain.appendChild(c); }
+  });
+
+  rors.forEach((ror, i) => {
+    const step = document.createElement("div"); step.className = "chain-step outcome";
+    step.style.animationDelay = ((steps.length+i)*90)+"ms";
+    step.innerHTML = `<div class="label">Review outcome (${ror.review_initiator})</div>
+      <div class="value">${ror.review_status.replace(/_/g," ")}${ror.outcome_action ?
+        ` · <span class="mono">${ror.outcome_action}</span>` : ""}</div>`;
+    chain.appendChild(step);
+    if (i < rors.length - 1){ const c = document.createElement("div"); c.className="connector"; chain.appendChild(c); }
+  });
+
+  container.appendChild(chain);
+
+  const recomputed = await computeRecordHash(cer);
+  const ok = cer.evidence_metadata && cer.evidence_metadata.record_hash === recomputed;
+  const integrity = document.createElement("div");
+  integrity.className = "integrity " + (ok ? "ok" : "bad");
+  integrity.textContent = ok
+    ? "Base record hash verified — content matches what was recorded."
+    : "Base record hash does NOT match recomputed content — this record may have been altered since recording.";
+  container.appendChild(integrity);
+
+  if (rors.length){
+    const anyMismatch = rors.some(r => r.linked_record_hash !== cer.evidence_metadata.record_hash);
+    const link = document.createElement("div");
+    link.className = "integrity " + (anyMismatch ? "bad" : "ok");
+    link.style.marginTop = "8px";
+    link.textContent = anyMismatch
+      ? "One or more linked review records reference a different hash than this CER's current hash."
+      : "Linked review record(s) correctly pin this CER's hash at review time.";
+    container.appendChild(link);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Tabs
+// ---------------------------------------------------------------------------
+function switchScreen(name){
+  document.querySelectorAll(".tab").forEach(b => b.classList.toggle("active", b.dataset.screen === name));
+  document.querySelectorAll(".screen").forEach(s => s.classList.toggle("active", s.id === "screen-" + name));
+  if (name === "chain"){
+    const cer = lastCER; const rors = lastROR ? [lastROR] : [];
+    renderChain(cer, rors);
+  }
+}
+document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => switchScreen(b.dataset.screen)));
+
+// ---------------------------------------------------------------------------
+// Flagship demo — under-16 -> circumvention attempt -> restriction -> appeal
+// -> outcome. Matches examples/flagship/*.json (regenerated here at runtime
+// with genuine hashes so the integrity check is real, not staged).
+// ---------------------------------------------------------------------------
+document.getElementById("loadDemoBtn").addEventListener("click", async () => {
+  const ts1 = "2026-08-21T09:12:03.000Z";
+  const cer = {
+    record_id: "ER-FLAGSHIP-CER-0001",
+    record_type: "control_evidence_record",
+    schema_version: "0.1.0",
+    timestamp: ts1,
+    age_state: {age_band: "under_16", age_assurance_confidence: "self_declared"},
+    control_context: {
+      control_id: "account_access_restriction", control_version: "3.2.0",
+      policy_id: "au-smma-policy", policy_version: "1.4.0", jurisdiction: "AU"
+    },
+    trigger: {
+      type: "circumvention_attempt_detected",
+      context: {pattern_category: "repeated_reattempt", attempt_count: 7, detection_confidence: "high"}
+    },
+    action: {action_type: "account_restricted", action_scope: "account"},
+    review: {review_available: true, review_mechanism_reference: "guardian-appeal-v1"},
+    evidence_metadata: {
+      source_system_id: "platform-trust-safety-svc", recorded_at: ts1,
+      hash_canonicalization_method: "JCS-1.0",
+    },
+  };
+  cer.evidence_metadata.record_hash = await computeRecordHash(cer);
+
+  const ts2 = "2026-08-23T15:40:00.000Z";
+  const ror = {
+    record_id: "ER-FLAGSHIP-ROR-0001",
+    record_type: "review_outcome_record",
+    schema_version: "0.1.0",
+    timestamp: ts2,
+    linked_record_id: cer.record_id,
+    linked_record_hash: cer.evidence_metadata.record_hash,
+    review_initiator: "guardian",
+    review_status: "upheld",
+    evidence_metadata: {
+      source_system_id: "platform-trust-safety-svc", recorded_at: ts2,
+      hash_canonicalization_method: "JCS-1.0",
+    },
+  };
+  ror.evidence_metadata.record_hash = await computeRecordHash(ror);
+
+  lastCER = cer; lastROR = ror;
+  renderJSON(document.getElementById("cer-output"), cer);
+  renderStatus(document.getElementById("cer-status"), validateCER(cer));
+  renderErrors(document.getElementById("cer-errors"), validateCER(cer).errors);
+  renderJSON(document.getElementById("ror-output"), ror);
+  renderStatus(document.getElementById("ror-status-box"), validateROR(ror));
+  renderErrors(document.getElementById("ror-errors"), validateROR(ror).errors);
+
+  switchScreen("chain");
+});
+</script>
+</body>
+</html>

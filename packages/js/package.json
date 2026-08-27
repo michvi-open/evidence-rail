@@ -1,0 +1,29 @@
+{
+  "name": "evidencerail",
+  "version": "0.1.0",
+  "description": "Reference validator and hashing helpers for the EvidenceRail child-safety control evidence schema (working name, pending trademark clearance).",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": [
+    "child-safety",
+    "trust-and-safety",
+    "schema",
+    "json-schema",
+    "evidence",
+    "compliance"
+  ],
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

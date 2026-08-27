@@ -1,0 +1,44 @@
+{
+  "description": "Jurisdiction change detected -> access policy re-evaluated, path gated.",
+  "expect": "valid",
+  "record_kind": "cer",
+  "record": {
+    "record_id": "01J8ZC-CER-JC-003",
+    "record_type": "control_evidence_record",
+    "schema_version": "0.1.0",
+    "timestamp": "2026-08-21T11:20:15.700Z",
+    "age_state": {
+      "age_band": "16_17",
+      "age_assurance_confidence": "standard"
+    },
+    "control_context": {
+      "control_id": "jurisdictional_access_policy",
+      "control_version": "2.0.1",
+      "policy_id": "cross-border-minors-policy",
+      "policy_version": "1.2.0",
+      "jurisdiction": "AU"
+    },
+    "trigger": {
+      "type": "jurisdiction_change_detected",
+      "context": {
+        "previous_jurisdiction": "US",
+        "new_jurisdiction": "AU",
+        "detection_method": "ip_signal"
+      }
+    },
+    "action": {
+      "action_type": "feature_gated",
+      "action_scope": "access_path"
+    },
+    "review": {
+      "review_available": true,
+      "review_mechanism_reference": "jurisdiction-dispute-v1"
+    },
+    "evidence_metadata": {
+      "source_system_id": "platform-trust-safety-svc",
+      "recorded_at": "2026-08-21T11:20:15.700Z",
+      "hash_canonicalization_method": "JCS-1.0",
+      "record_hash": "sha256:23ab2b5c18144d8d0383aa0e751eff6e46a823c7d63e7ac9a05f6946417e9cd7"
+    }
+  }
+}

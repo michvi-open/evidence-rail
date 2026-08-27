@@ -1,0 +1,21 @@
+{
+  "description": "Flagship demo, step 2: guardian appeal on the restriction -> upheld. Uses the spec-correct hash rule.",
+  "expect": "valid",
+  "record_kind": "ror",
+  "record": {
+    "record_id": "ER-FLAGSHIP-ROR-0001",
+    "record_type": "review_outcome_record",
+    "schema_version": "0.1.0",
+    "timestamp": "2026-08-23T15:40:00.000Z",
+    "linked_record_id": "ER-FLAGSHIP-CER-0001",
+    "linked_record_hash": "sha256:e41a4802eb434d6f379cf5aee4ce9b0833c652e088c23ddafabfae10f8d77a76",
+    "review_initiator": "guardian",
+    "review_status": "upheld",
+    "evidence_metadata": {
+      "source_system_id": "platform-trust-safety-svc",
+      "recorded_at": "2026-08-23T15:40:00.000Z",
+      "hash_canonicalization_method": "JCS-1.0",
+      "record_hash": "sha256:c48df700ec1e1998847ee12117663089bf62f787f7095df8536941e8996810ab"
+    }
+  }
+}

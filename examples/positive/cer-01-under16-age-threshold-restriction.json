@@ -1,0 +1,45 @@
+{
+  "description": "Under-16 age-signal threshold crossed -> account restricted (AU SMMA context).",
+  "expect": "valid",
+  "record_kind": "cer",
+  "record": {
+    "record_id": "01J8ZC-CER-A16-001",
+    "record_type": "control_evidence_record",
+    "schema_version": "0.1.0",
+    "timestamp": "2026-08-21T09:12:03.441Z",
+    "age_state": {
+      "age_band": "under_16",
+      "age_assurance_confidence": "high_confidence",
+      "age_assurance_reference": "ageaware-tok-8f3d2a",
+      "age_assurance_method_hint": "verification"
+    },
+    "control_context": {
+      "control_id": "account_access_restriction",
+      "control_version": "3.2.0",
+      "policy_id": "au-smma-policy",
+      "policy_version": "1.4.0",
+      "jurisdiction": "AU"
+    },
+    "trigger": {
+      "type": "age_signal_threshold",
+      "context": {
+        "threshold": "under_16",
+        "signal_state": "high_confidence"
+      }
+    },
+    "action": {
+      "action_type": "account_restricted",
+      "action_scope": "account"
+    },
+    "review": {
+      "review_available": true,
+      "review_mechanism_reference": "guardian-appeal-v1"
+    },
+    "evidence_metadata": {
+      "source_system_id": "platform-trust-safety-svc",
+      "recorded_at": "2026-08-21T09:12:03.441Z",
+      "hash_canonicalization_method": "JCS-1.0",
+      "record_hash": "sha256:5fc05c6bc1b11444a59beb7f252f71f4a9b4d2cb3b6bf0a6286ab3afcfb03de4"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://michvi.com/open-source/evidence-rail/schema/v0.1/trigger-context/jurisdiction.schema.json",
+  "title": "Trigger Context — Jurisdiction Change",
+  "description": "Used by trigger.type: jurisdiction_change_detected.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "previous_jurisdiction": { "$ref": "../common.schema.json#/$defs/jurisdictionCode" },
+    "new_jurisdiction": { "$ref": "../common.schema.json#/$defs/jurisdictionCode" },
+    "detection_method": {
+      "type": "string",
+      "enum": ["ip_signal", "account_setting", "platform_signal", "unspecified"]
+    }
+  }
+}

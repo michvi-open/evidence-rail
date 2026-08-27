@@ -1,0 +1,21 @@
+{
+  "description": "Guardian appeal on CER-01's restriction -> upheld, no state change.",
+  "expect": "valid",
+  "record_kind": "ror",
+  "record": {
+    "record_id": "01J8ZD-ROR-UP-001",
+    "record_type": "review_outcome_record",
+    "schema_version": "0.1.0",
+    "timestamp": "2026-08-23T14:05:11.000Z",
+    "linked_record_id": "01J8ZC-CER-A16-001",
+    "linked_record_hash": "sha256:5fc05c6bc1b11444a59beb7f252f71f4a9b4d2cb3b6bf0a6286ab3afcfb03de4",
+    "review_initiator": "guardian",
+    "review_status": "upheld",
+    "evidence_metadata": {
+      "source_system_id": "platform-trust-safety-svc",
+      "recorded_at": "2026-08-23T14:05:11.000Z",
+      "hash_canonicalization_method": "JCS-1.0",
+      "record_hash": "sha256:ac6cd0d6e2bc437e81c726bd44dd174ca28e92c27346d7c83ea3e9a8e9abe3c8"
+    }
+  }
+}

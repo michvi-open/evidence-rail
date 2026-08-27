@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://michvi.com/open-source/evidence-rail/schema/v0.1/trigger-context/circumvention.schema.json",
+  "title": "Trigger Context — Circumvention Attempt",
+  "description": "Used by trigger.type: circumvention_attempt_detected. Pattern category, count, and confidence only — never device fingerprints, IPs, or other identifying signal values.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "pattern_category": {
+      "type": "string",
+      "enum": ["repeated_reattempt", "proxy_vpn_signal", "falsified_input_pattern", "device_signal_mismatch", "other"]
+    },
+    "attempt_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10000,
+      "description": "Count only, never the individual attempt records themselves."
+    },
+    "detection_confidence": {
+      "type": "string",
+      "enum": ["low", "medium", "high"]
+    }
+  }
+}

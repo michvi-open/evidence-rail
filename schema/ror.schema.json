@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://michvi.com/open-source/evidence-rail/schema/v0.1/ror.schema.json",
+  "title": "Review/Outcome Record (ROR) v0.1",
+  "description": "A first-class, independently tamper-evident record linked to exactly one Control Evidence Record. Never edits the CER — only appends a related event.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "record_id",
+    "record_type",
+    "schema_version",
+    "timestamp",
+    "linked_record_id",
+    "linked_record_hash",
+    "review_initiator",
+    "review_status",
+    "evidence_metadata"
+  ],
+  "properties": {
+
+    "record_id": { "$ref": "common.schema.json#/$defs/recordId" },
+    "record_type": { "const": "review_outcome_record" },
+    "schema_version": { "$ref": "common.schema.json#/$defs/semver" },
+    "timestamp": {
+      "$ref": "common.schema.json#/$defs/timestamp",
+      "description": "When the review outcome was reached."
+    },
+
+    "linked_record_id": {
+      "$ref": "common.schema.json#/$defs/recordId",
+      "description": "The record_id of the base CER this review pertains to."
+    },
+    "linked_record_hash": {
+      "$ref": "common.schema.json#/$defs/hash",
+      "description": "The linked CER's evidence_metadata.record_hash at the time this ROR was created — lets a verifier confirm the base record hasn't drifted between the original action and the review."
+    },
+
+    "review_initiator": { "$ref": "common.schema.json#/$defs/reviewInitiator" },
+    "review_status": { "$ref": "common.schema.json#/$defs/reviewStatus" },
+    "outcome_action": {
+      "$ref": "common.schema.json#/$defs/actionType",
+      "description": "Populated only if the review changed account/feature state, e.g. access_reinstated."
+    },
+
+    "evidence_metadata": { "$ref": "common.schema.json#/$defs/evidenceMetadata" }
+  }
+}

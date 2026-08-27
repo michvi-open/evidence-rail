@@ -1,0 +1,22 @@
+{
+  "description": "Follow-up reassessment corrects CER-06's age-state -> gated feature unlocked.",
+  "expect": "valid",
+  "record_kind": "ror",
+  "record": {
+    "record_id": "01J8ZD-ROR-CR-003",
+    "record_type": "review_outcome_record",
+    "schema_version": "0.1.0",
+    "timestamp": "2026-08-25T16:40:00.000Z",
+    "linked_record_id": "01J8ZC-CER-RA-006",
+    "linked_record_hash": "sha256:e494856715b920f9a9b09a9820e0b625039a58adae10c3faec45b4f2b5aa1d78",
+    "review_initiator": "platform",
+    "review_status": "overturned",
+    "outcome_action": "feature_unlocked",
+    "evidence_metadata": {
+      "source_system_id": "platform-trust-safety-svc",
+      "recorded_at": "2026-08-25T16:40:00.000Z",
+      "hash_canonicalization_method": "JCS-1.0",
+      "record_hash": "sha256:dd8504e9b34d4c2a99866e7200b2e51c0df0572e65de2ea2836f1bcd82a3c145"
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "description": "Parental consent required before feature access -> feature gated.",
+  "expect": "valid",
+  "record_kind": "cer",
+  "record": {
+    "record_id": "01J8ZC-CER-PC-002",
+    "record_type": "control_evidence_record",
+    "schema_version": "0.1.0",
+    "timestamp": "2026-08-21T10:03:44.100Z",
+    "age_state": {
+      "age_band": "13_15",
+      "age_assurance_confidence": "standard",
+      "age_assurance_reference": "ageaware-tok-2b91cc"
+    },
+    "control_context": {
+      "control_id": "feature_parental_gate",
+      "control_version": "1.1.0",
+      "policy_id": "us-ca-minors-policy",
+      "policy_version": "2.0.0",
+      "jurisdiction": "US-CA"
+    },
+    "trigger": {
+      "type": "parental_consent_required",
+      "context": {
+        "consent_mechanism": "email",
+        "consent_scope": "feature"
+      }
+    },
+    "action": {
+      "action_type": "feature_gated",
+      "action_scope": "feature"
+    },
+    "review": {
+      "review_available": true,
+      "review_mechanism_reference": "guardian-consent-flow-v2"
+    },
+    "evidence_metadata": {
+      "source_system_id": "platform-trust-safety-svc",
+      "recorded_at": "2026-08-21T10:03:44.100Z",
+      "hash_canonicalization_method": "JCS-1.0",
+      "record_hash": "sha256:e8aaf2b844d0e21458a079ed1346fa62c75de4556b305a86be740be65cd542fb"
+    }
+  }
+}

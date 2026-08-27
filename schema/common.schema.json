@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://michvi.com/open-source/evidence-rail/schema/v0.1/common.schema.json",
+  "title": "Common Types — Child-Safety Control Evidence Schema v0.1",
+  "description": "Shared $defs referenced by cer.schema.json, ror.schema.json, and the trigger-context sub-schemas. Not intended to validate a top-level document on its own.",
+  "$defs": {
+
+    "recordId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{8,64}$",
+      "description": "Opaque unique record identifier. UUIDv4 or ULID recommended; both satisfy this pattern. Never reused across records."
+    },
+
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp, UTC. Millisecond precision recommended."
+    },
+
+    "semver": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version string, e.g. '3.2.0'."
+    },
+
+    "hash": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+:[a-f0-9]+$",
+      "description": "Format '<algorithm>:<digest>', e.g. 'sha256:9f86d081...'."
+    },
+
+    "jurisdictionCode": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}(-[A-Z0-9]{1,3})?$",
+      "description": "ISO 3166-1 alpha-2, optionally suffixed with an ISO 3166-2 subdivision (e.g. 'AU', 'US-CA')."
+    },
+
+    "ageBand": {
+      "type": "string",
+      "enum": ["under_13", "13_15", "under_16", "16_17", "adult", "unknown"],
+      "description": "Universal, jurisdiction-neutral age band. Legal meaning is resolved by pairing this with control_context.jurisdiction and control_context.policy_version — this enum never encodes a country-specific legal threshold directly."
+    },
+
+    "ageAssuranceConfidence": {
+      "type": "string",
+      "enum": ["unassured", "self_declared", "standard", "enhanced", "high_confidence"],
+      "description": "Confidence tier behind age_band. Deliberately aligned in concept to the confidence-tier structure used in ISO/IEC 27566-1, so the two standards compose rather than compete."
+    },
+
+    "ageAssuranceMethodHint": {
+      "type": "string",
+      "enum": ["self_declaration", "estimation", "verification", "platform_signal", "unknown"],
+      "description": "Coarse hint only, for triage. Not a substitute for resolving the actual method via age_state.age_assurance_reference."
+    },
+
+    "triggerType": {
+      "type": "string",
+      "enum": [
+        "age_signal_threshold",
+        "age_assurance_state_change",
+        "parental_consent_required",
+        "parental_consent_revoked",
+        "jurisdiction_change_detected",
+        "circumvention_attempt_detected",
+        "cross_platform_age_signal_received",
+        "age_reassessment_triggered",
+        "account_reinstatement_request",
+        "manual_flag"
+      ],
+      "description": "Closed v0.1 vocabulary, scoped to access/account/age-state/jurisdiction/consent/circumvention conditions only (per Charter §7). Extension happens via a schema version bump, never a deployment-specific custom string."
+    },
+
+    "actionType": {
+      "type": "string",
+      "enum": [
+        "account_restricted",
+        "account_suspended",
+        "account_removed",
+        "feature_gated",
+        "feature_unlocked",
+        "consent_requested",
+        "consent_confirmed",
+        "access_denied",
+        "access_reinstated",
+        "escalated_for_manual_review",
+        "no_action_policy_permitted"
+      ],
+      "description": "Closed v0.1 vocabulary. Extension via schema version bump only."
+    },
+
+    "actionScope": {
+      "type": "string",
+      "enum": ["account", "feature", "session", "access_path"]
+    },
+
+    "reviewInitiator": {
+      "type": "string",
+      "enum": ["user", "guardian", "platform", "regulator"]
+    },
+
+    "reviewStatus": {
+      "type": "string",
+      "enum": ["pending", "upheld", "overturned", "partially_overturned", "withdrawn"]
+    },
+
+    "externalReferenceType": {
+      "type": "string",
+      "enum": [
+        "dsa_statement_of_reason",
+        "age_assurance_credential",
+        "platform_age_signal",
+        "external_audit_reference"
+      ]
+    },
+
+    "externalReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reference_type", "reference_id"],
+      "properties": {
+        "reference_type": { "$ref": "#/$defs/externalReferenceType" },
+        "reference_id": { "type": "string", "minLength": 1, "maxLength": 256 }
+      }
+    },
+
+    "evidenceMetadata": {
+      "type": "object",
+      "description": "Integrity block shared by CER and ROR. Every record — base or linked — is independently tamper-evident.",
+      "additionalProperties": false,
+      "required": ["source_system_id", "recorded_at", "record_hash", "hash_canonicalization_method"],
+      "properties": {
+        "source_system_id": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "verifier_id": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "recorded_at": { "$ref": "#/$defs/timestamp" },
+        "record_hash": { "$ref": "#/$defs/hash" },
+        "hash_canonicalization_method": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "description": "e.g. 'JCS-1.0' (JSON Canonicalization Scheme). Fixes how record_hash was computed."
+        },
+        "signing_key_reference": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "signature": { "type": "string", "minLength": 1 },
+        "previous_record_hash": {
+          "$ref": "#/$defs/hash",
+          "description": "Optional. Only present under the Sequential Integrity Profile. Its absence is fully v0.1-conformant — core conformance does not assume ordered, centralized persistence."
+        }
+      }
+    }
+
+  }
+}

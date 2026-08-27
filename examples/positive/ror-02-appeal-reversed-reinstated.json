@@ -1,0 +1,22 @@
+{
+  "description": "Manual review of CER-04's escalation -> overturned, access reinstated.",
+  "expect": "valid",
+  "record_kind": "ror",
+  "record": {
+    "record_id": "01J8ZD-ROR-OV-002",
+    "record_type": "review_outcome_record",
+    "schema_version": "0.1.0",
+    "timestamp": "2026-08-24T09:00:00.000Z",
+    "linked_record_id": "01J8ZC-CER-CV-004",
+    "linked_record_hash": "sha256:ad1328656d08d169eea0fdb8848a203a8fdb6c1563a9ab95b2b0b8af022e528e",
+    "review_initiator": "platform",
+    "review_status": "overturned",
+    "outcome_action": "access_reinstated",
+    "evidence_metadata": {
+      "source_system_id": "platform-trust-safety-svc",
+      "recorded_at": "2026-08-24T09:00:00.000Z",
+      "hash_canonicalization_method": "JCS-1.0",
+      "record_hash": "sha256:ea95bacdb330625fdeeafe1d175f9580f561e4c6d78b125f1edbc001fbfaf74d"
+    }
+  }
+}

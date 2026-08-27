@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://michvi.com/open-source/evidence-rail/schema/v0.1/trigger-context/account-state.schema.json",
+  "title": "Trigger Context — Account State / Manual Flag",
+  "description": "Used by trigger.type: account_reinstatement_request, manual_flag. Source and reason category only.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "request_source": {
+      "type": "string",
+      "enum": ["user", "guardian", "platform_support", "regulator"]
+    },
+    "flag_reason_category": {
+      "type": "string",
+      "enum": ["manual_review_request", "regulator_inquiry", "guardian_escalation", "other"]
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://michvi.com/open-source/evidence-rail/schema/v0.1/trigger-context/parental-consent.schema.json",
+  "title": "Trigger Context — Parental Consent",
+  "description": "Used by trigger.type: parental_consent_required, parental_consent_revoked. Mechanism and category only — no guardian or child identity fields exist on this object by design.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "consent_mechanism": {
+      "type": "string",
+      "enum": ["email", "qr_code", "otp", "id_verification", "other"]
+    },
+    "consent_scope": {
+      "type": "string",
+      "enum": ["account", "feature", "unspecified"]
+    },
+    "revocation_reason_category": {
+      "type": "string",
+      "enum": ["guardian_request", "policy_expiry", "platform_initiated", "unspecified"],
+      "description": "Relevant primarily to parental_consent_revoked."
+    }
+  }
+}

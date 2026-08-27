@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://michvi.com/open-source/evidence-rail/schema/v0.1/trigger-context/age-threshold.schema.json",
+  "title": "Trigger Context — Age Threshold / Signal State",
+  "description": "Used by trigger.type: age_signal_threshold, age_assurance_state_change, cross_platform_age_signal_received, age_reassessment_triggered. All fields optional — include only what's known. No identity or content fields exist on this object by design (additionalProperties: false).",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "threshold": { "$ref": "../common.schema.json#/$defs/ageBand" },
+    "signal_state": { "$ref": "../common.schema.json#/$defs/ageAssuranceConfidence" },
+    "previous_signal_state": {
+      "$ref": "../common.schema.json#/$defs/ageAssuranceConfidence",
+      "description": "Relevant primarily to age_assurance_state_change — the confidence tier before this event."
+    },
+    "signal_source": {
+      "type": "string",
+      "enum": ["platform_internal", "os_level_signal", "app_store_signal", "third_party_provider", "unspecified"],
+      "description": "Relevant primarily to cross_platform_age_signal_received."
+    }
+  }
+}

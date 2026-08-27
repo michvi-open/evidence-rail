@@ -1,0 +1,192 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://michvi.com/open-source/evidence-rail/schema/v0.1/cer.schema.json",
+  "title": "Child-Safety Control Evidence Record (CER) v0.1",
+  "description": "The immutable base event. Never edited in place — corrections and reviews are separate, linked Review/Outcome Records (ror.schema.json). additionalProperties:false at every level is the enforcement mechanism for the privacy boundary: an unlisted field (child identity, content, etc.) fails validation rather than relying on a deny-list.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "record_id",
+    "record_type",
+    "schema_version",
+    "timestamp",
+    "age_state",
+    "control_context",
+    "trigger",
+    "action",
+    "review",
+    "evidence_metadata"
+  ],
+  "properties": {
+
+    "record_id": { "$ref": "common.schema.json#/$defs/recordId" },
+    "record_type": { "const": "control_evidence_record" },
+    "schema_version": { "$ref": "common.schema.json#/$defs/semver" },
+    "timestamp": {
+      "$ref": "common.schema.json#/$defs/timestamp",
+      "description": "When the control evaluated/fired — distinct from evidence_metadata.recorded_at, which is when the record was persisted."
+    },
+
+    "age_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["age_band", "age_assurance_confidence"],
+      "properties": {
+        "age_band": { "$ref": "common.schema.json#/$defs/ageBand" },
+        "age_assurance_confidence": { "$ref": "common.schema.json#/$defs/ageAssuranceConfidence" },
+        "age_assurance_reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "description": "Opaque pointer to the upstream age-assurance credential/result. Never a raw date of birth or biometric value."
+        },
+        "age_assurance_method_hint": { "$ref": "common.schema.json#/$defs/ageAssuranceMethodHint" }
+      }
+    },
+
+    "control_context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["control_id", "control_version", "policy_id", "policy_version", "jurisdiction"],
+      "properties": {
+        "control_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "control_version": { "$ref": "common.schema.json#/$defs/semver" },
+        "policy_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "policy_version": { "$ref": "common.schema.json#/$defs/semver" },
+        "jurisdiction": { "$ref": "common.schema.json#/$defs/jurisdictionCode" },
+        "policy_document_reference": { "type": "string", "minLength": 1, "maxLength": 512 }
+      }
+    },
+
+    "trigger": {
+      "type": "object",
+      "description": "type selects the record-routing branch; context (if present) must conform to the matching trigger-context sub-schema. context is always optional at the trigger level, per field.",
+      "oneOf": [
+        { "$ref": "#/$defs/triggerBranches/age_signal_threshold" },
+        { "$ref": "#/$defs/triggerBranches/age_assurance_state_change" },
+        { "$ref": "#/$defs/triggerBranches/parental_consent_required" },
+        { "$ref": "#/$defs/triggerBranches/parental_consent_revoked" },
+        { "$ref": "#/$defs/triggerBranches/jurisdiction_change_detected" },
+        { "$ref": "#/$defs/triggerBranches/circumvention_attempt_detected" },
+        { "$ref": "#/$defs/triggerBranches/cross_platform_age_signal_received" },
+        { "$ref": "#/$defs/triggerBranches/age_reassessment_triggered" },
+        { "$ref": "#/$defs/triggerBranches/account_reinstatement_request" },
+        { "$ref": "#/$defs/triggerBranches/manual_flag" }
+      ]
+    },
+
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action_type", "action_scope"],
+      "properties": {
+        "action_type": { "$ref": "common.schema.json#/$defs/actionType" },
+        "action_scope": { "$ref": "common.schema.json#/$defs/actionScope" }
+      }
+    },
+
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["review_available"],
+      "properties": {
+        "review_available": { "type": "boolean" },
+        "review_mechanism_reference": { "type": "string", "minLength": 1, "maxLength": 256 }
+      }
+    },
+
+    "evidence_metadata": { "$ref": "common.schema.json#/$defs/evidenceMetadata" },
+
+    "external_references": {
+      "type": "array",
+      "items": { "$ref": "common.schema.json#/$defs/externalReference" },
+      "maxItems": 16,
+      "description": "Typed pointers to related records in other schemas (e.g. a DSA Statement-of-Reason). Linked, never merged — per Charter §7."
+    }
+  },
+
+  "$defs": {
+    "triggerBranches": {
+      "age_signal_threshold": {
+        "additionalProperties": false,
+        "required": ["type"],
+        "properties": {
+          "type": { "const": "age_signal_threshold" },
+          "context": { "$ref": "trigger-context/age-threshold.schema.json" }
+        }
+      },
+      "age_assurance_state_change": {
+        "additionalProperties": false,
+        "required": ["type"],
+        "properties": {
+          "type": { "const": "age_assurance_state_change" },
+          "context": { "$ref": "trigger-context/age-threshold.schema.json" }
+        }
+      },
+      "parental_consent_required": {
+        "additionalProperties": false,
+        "required": ["type"],
+        "properties": {
+          "type": { "const": "parental_consent_required" },
+          "context": { "$ref": "trigger-context/parental-consent.schema.json" }
+        }
+      },
+      "parental_consent_revoked": {
+        "additionalProperties": false,
+        "required": ["type"],
+        "properties": {
+          "type": { "const": "parental_consent_revoked" },
+          "context": { "$ref": "trigger-context/parental-consent.schema.json" }
+        }
+      },
+      "jurisdiction_change_detected": {
+        "additionalProperties": false,
+        "required": ["type"],
+        "properties": {
+          "type": { "const": "jurisdiction_change_detected" },
+          "context": { "$ref": "trigger-context/jurisdiction.schema.json" }
+        }
+      },
+      "circumvention_attempt_detected": {
+        "additionalProperties": false,
+        "required": ["type"],
+        "properties": {
+          "type": { "const": "circumvention_attempt_detected" },
+          "context": { "$ref": "trigger-context/circumvention.schema.json" }
+        }
+      },
+      "cross_platform_age_signal_received": {
+        "additionalProperties": false,
+        "required": ["type"],
+        "properties": {
+          "type": { "const": "cross_platform_age_signal_received" },
+          "context": { "$ref": "trigger-context/age-threshold.schema.json" }
+        }
+      },
+      "age_reassessment_triggered": {
+        "additionalProperties": false,
+        "required": ["type"],
+        "properties": {
+          "type": { "const": "age_reassessment_triggered" },
+          "context": { "$ref": "trigger-context/age-threshold.schema.json" }
+        }
+      },
+      "account_reinstatement_request": {
+        "additionalProperties": false,
+        "required": ["type"],
+        "properties": {
+          "type": { "const": "account_reinstatement_request" },
+          "context": { "$ref": "trigger-context/account-state.schema.json" }
+        }
+      },
+      "manual_flag": {
+        "additionalProperties": false,
+        "required": ["type"],
+        "properties": {
+          "type": { "const": "manual_flag" },
+          "context": { "$ref": "trigger-context/account-state.schema.json" }
+        }
+      }
+    }
+  }
+}

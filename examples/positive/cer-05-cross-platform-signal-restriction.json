@@ -1,0 +1,45 @@
+{
+  "description": "OS-level age signal received -> account restriction applied.",
+  "expect": "valid",
+  "record_kind": "cer",
+  "record": {
+    "record_id": "01J8ZC-CER-XP-005",
+    "record_type": "control_evidence_record",
+    "schema_version": "0.1.0",
+    "timestamp": "2026-08-21T13:30:52.000Z",
+    "age_state": {
+      "age_band": "under_16",
+      "age_assurance_confidence": "high_confidence",
+      "age_assurance_method_hint": "platform_signal"
+    },
+    "control_context": {
+      "control_id": "account_access_restriction",
+      "control_version": "3.2.0",
+      "policy_id": "au-smma-policy",
+      "policy_version": "1.4.0",
+      "jurisdiction": "AU"
+    },
+    "trigger": {
+      "type": "cross_platform_age_signal_received",
+      "context": {
+        "signal_source": "os_level_signal",
+        "signal_state": "high_confidence",
+        "threshold": "under_16"
+      }
+    },
+    "action": {
+      "action_type": "account_restricted",
+      "action_scope": "account"
+    },
+    "review": {
+      "review_available": true,
+      "review_mechanism_reference": "guardian-appeal-v1"
+    },
+    "evidence_metadata": {
+      "source_system_id": "platform-trust-safety-svc",
+      "recorded_at": "2026-08-21T13:30:52.000Z",
+      "hash_canonicalization_method": "JCS-1.0",
+      "record_hash": "sha256:319f981d9c31323a92d7a3ac13ecde9ba01cd66765772c480f4c09f209a015c5"
+    }
+  }
+}
