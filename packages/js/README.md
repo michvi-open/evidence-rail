@@ -1,6 +1,6 @@
 # evidencerail
 
-*Working name — pending final trademark clearance.*
+*Release status: v0.1 release candidate.*
 
 Reference validator and hashing helpers for the EvidenceRail Child-Safety Control Evidence Schema.
 Same rules as `schema/*.schema.json`, same canonicalization as `tests/validate.py` and
@@ -16,8 +16,7 @@ Zero runtime dependencies. Uses Node's built-in `node:crypto` (via WebCrypto) fo
 npm install evidencerail
 ```
 
-*(Not yet published to the public registry — working name, pending trademark clearance. Until then,
-install from a local tarball: see "Local testing" below.)*
+This package is not published to the public npm registry in v0.1. Until then, install from a local tarball; see "Local testing" below.
 
 ## Usage
 

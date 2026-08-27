@@ -1,7 +1,6 @@
 "use strict";
 /**
- * EvidenceRail reference validator + hashing helpers (working name, pending
- * trademark clearance).
+ * EvidenceRail v0.1 reference validator + hashing helpers.
  *
  * Ported directly from reference-app/index.html's core logic — same vocab,
  * same canonicalization, same validation rules encoded in schema/*.schema.json.

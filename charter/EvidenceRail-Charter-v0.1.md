@@ -1,8 +1,8 @@
 # EvidenceRail — v0.1 Charter
 
-**Status:** Draft for review
+**Status:** Release Candidate v0.1
 **Version:** 0.1
-**Working name:** EvidenceRail (subject to final trademark clearance — see naming note at the end of this document)
+**Project name:** EvidenceRail (public launch subject to final trademark clearance)
 
 **Canonical public line:** EvidenceRail — an open schema for portable child-safety control evidence.
 
@@ -12,13 +12,13 @@
 
 ## 1. Problem
 
-Regulators are increasingly requiring platforms to demonstrate — not merely assert — that child-safety controls operated as intended on a given user at a given time. Australia's Online Safety Amendment (Social Media Minimum Age) Act 2024 requires "reasonable steps," but the eSafety Commissioner has stated publicly that she cannot currently discharge the burden of proof required for civil penalty proceedings because investigations rely on platform "representations" rather than primary documents, and that third-party evidence from age-assurance vendors is "instrumental" but presently inaccessible. Equivalent evidentiary demands are emerging under the EU DSA's protection-of-minors guidelines and Ofcom's child-safety codes.
+Age-related child-safety controls can create an evidence-reconstruction problem: the age-state, policy version, control version, trigger, action, and later review outcome may be recorded in different systems or not preserved in a portable form.
 
 The regulatory question has shifted from *"do controls exist?"* to *"what operated, on what age-state, under what policy version, and what happened next?"*
 
 This evidentiary layer is currently produced, if at all, as closed, vendor-proprietary infrastructure. Commercial age-compliance platforms already generate audit trails and cryptographically-verifiable receipts of age-category, jurisdiction, and consent decisions — proving the demand is real — but each vendor's format is closed, non-portable, and unreadable outside that vendor's own system. No open, vendor-neutral, cross-platform interchange format exists for this specific evidentiary object.
 
-Adjacent standards each solve a different piece of the surrounding problem — age-assurance system design, age-credential portability, org-level trust-and-safety maturity, content-moderation transparency — but none of them record the platform-level event this project targets: *what control fired, on what age-state, under what policy version, and what happened next.*
+Adjacent standards and frameworks address related areas such as age assurance, age credentials, organisational trust-and-safety practices, and content-moderation transparency. EvidenceRail focuses narrowly on a different evidentiary object: *what control fired, on what age-state, under what policy version, what action followed, and what happened on review.*
 
 This project defines an open schema for that missing evidentiary object.
 
@@ -166,7 +166,7 @@ This project is explicitly **not**:
 
 ## 11. Licensing
 
-Leaning toward a split model, pending deliberate patent/licensing review rather than a default:
+The v0.1 repository uses a split licensing model:
 - **Spec/schema itself: CC0 / public-domain-style.** Given the ambition is a neutral interchange format, maximum-openness licensing on the schema definition removes any adoption friction tied to patent or attribution terms — closer to how OSCAL is published than to a typical Apache-licensed project.
 - **Reference implementation (validator, examples): Apache 2.0.** Precedent-consistent with OCSF's reference tooling, and its explicit patent grant is worth keeping for the code specifically.
 
@@ -184,6 +184,6 @@ Recommended starting structure, modeled loosely on how OCSF and DTSP's Safe Fram
 
 ---
 
-*Naming: **EvidenceRail** is adopted as the working name — subject to final formal trademark clearance (USPTO/WIPO/IP India, ideally via a trademark professional) before any public launch, press, or commercial commitment. A first-pass sweep (GitHub, npm, PyPI, general web/company/trademark search) found it clean; a first-pass sweep is a signal to proceed, not a legal guarantee.*
+*Naming: **EvidenceRail** is the project name used for v0.1. Final trademark clearance remains a publication gate before public launch, press, or commercial commitment.*
 
 *One explicit discipline going forward: "Rail" is chosen for its infrastructure feel — neutral, interoperable, standard-like — and nothing more. It should not be over-explained or extended into a literal transport/network metaphor in documentation, diagrams, or marketing. The canonical object this project standardizes remains, unambiguously, the **Child-Safety Control Evidence Record** — the name is a label for that object's home, not a redefinition of what the object is.*

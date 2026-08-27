@@ -1,7 +1,7 @@
 {
   "name": "evidencerail",
   "version": "0.1.0",
-  "description": "Reference validator and hashing helpers for the EvidenceRail child-safety control evidence schema (working name, pending trademark clearance).",
+  "description": "Reference validator and hashing helpers for the EvidenceRail child-safety control evidence schema.",
   "main": "src/index.js",
   "type": "commonjs",
   "files": [
@@ -25,5 +25,14 @@
     "node": ">=18"
   },
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michvi-open/evidence-rail.git",
+    "directory": "packages/js"
+  },
+  "homepage": "https://michvi.com/open-source/evidence-rail",
+  "bugs": {
+    "url": "https://github.com/michvi-open/evidence-rail/issues"
+  }
 }

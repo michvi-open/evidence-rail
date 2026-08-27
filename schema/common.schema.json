@@ -44,7 +44,7 @@
     "ageAssuranceConfidence": {
       "type": "string",
       "enum": ["unassured", "self_declared", "standard", "enhanced", "high_confidence"],
-      "description": "Confidence tier behind age_band. Deliberately aligned in concept to the confidence-tier structure used in ISO/IEC 27566-1, so the two standards compose rather than compete."
+      "description": "Confidence tier behind age_band. Uses a confidence-tier concept intended to remain compatible with common age-assurance approaches, including ISO/IEC 27566-1."
     },
 
     "ageAssuranceMethodHint": {

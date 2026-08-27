@@ -1,7 +1,6 @@
 # EvidenceRail
 
-*Working name — pending final trademark clearance. A first-pass sweep (GitHub, npm, PyPI, general
-web/company/trademark search) found it clean; that's a signal to proceed, not a legal guarantee.*
+*Release status: v0.1 release candidate. Public launch remains subject to final trademark clearance.*
 
 **EvidenceRail — an open schema for portable child-safety control evidence.**
 
@@ -10,13 +9,13 @@ controls operated.
 
 ## The problem this addresses
 
-Regulators are increasingly requiring platforms to demonstrate — not merely assert — that
-child-safety controls operated as intended on a given account at a given time. Existing standards
-each solve an adjacent piece: age-assurance system design (ISO/IEC 27566-1, IEEE 2089.1), portable
-age credentials (euCONSENT/AVPA-style tokens), org-level trust-and-safety maturity (ISO/IEC 25389),
-and content-moderation transparency (EU DSA Statements of Reason). None of them record the specific
-object this project standardizes: **what control fired, on what age-state, under what policy
-version, and what happened next.**
+When an age-related child-safety control is questioned later, a platform may need to reconstruct
+what age-state the control evaluated, which policy and control versions were active, what triggered
+the control, what action was taken, and what happened on review.
+
+Those facts may be distributed across systems and teams. EvidenceRail defines a portable,
+machine-readable record for that specific evidentiary object: **what control fired, on what
+age-state, under what policy version, what action followed, and what happened on review.**
 
 Full reasoning, prior-art landscape, and scope boundaries: [`charter/EvidenceRail-Charter-v0.1.md`](charter/EvidenceRail-Charter-v0.1.md).
 
@@ -66,7 +65,7 @@ Record and Review/Outcome Record from scratch.
 
 **Use the Node package:**
 `packages/js/` wraps the same validator and hashing logic as a zero-dependency npm package
-(`evidencerail`). It isn't published yet — working name, pending trademark clearance — but you can
+(`evidencerail`). It is not published to the public npm registry in v0.1, but you can
 build and install it locally exactly as an external project would:
 ```bash
 cd packages/js
@@ -109,7 +108,7 @@ dependency-free, auditable in one file, and usable offline. It's cross-checked a
 
 Charter ✓ → Data Model ✓ → Schema ✓ → Fixtures ✓ → Validator ✓ → Reference tool ✓
 
-Naming: working name adopted, formal trademark clearance in progress. Next: public explainer /
+Naming: EvidenceRail is the v0.1 project name; final trademark clearance remains a public-release gate. Next: public explainer /
 launch materials, not further engineering.
 
 ## License
