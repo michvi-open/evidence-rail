@@ -17,8 +17,8 @@
 
 - [x] Complete preliminary EvidenceRail name-conflict screen.
 - [x] Confirm final copyright and publisher attribution.
-- [ ] Confirm canonical Michvi schema URLs resolve publicly.
-- [ ] Confirm the Michvi EvidenceRail landing page is live.
+- [x] Confirm canonical Michvi schema URLs resolve publicly.
+- [x] Confirm the Michvi EvidenceRail landing page is live.
 - [x] Run keyboard-only accessibility checks.
 - [x] Run basic screen-reader/accessibility review.
 - [x] Run narrow/mobile-width checks.
