@@ -1,7 +1,7 @@
 # EvidenceRail — v0.1 Formal Data Model
 
 **Status:** v0.1
-**Project name:** EvidenceRail (public launch subject to final trademark clearance)
+**Project name:** EvidenceRail
 **Companion to:** Charter v0.1 (`EvidenceRail-Charter-v0.1.md`)
 **Scope of this document:** Field-level definitions only. Serialization format (JSON Schema, canonicalization method) and reference implementation are separate, later artifacts — this document fixes *what fields exist, what they mean, and what closes off ambiguity*, per the charter's instruction to design the object before the code.
 
@@ -203,4 +203,4 @@ No open v0.1 questions remain at this point. Future ambiguities surfaced during 
 | Flat fields (this document's tables) vs. nested wire format | The field-group headers in this document (Age-state, Control context, Trigger, Action, Review) are realized as nested JSON objects in the formal schema — e.g. `trigger: { type, context }` rather than flat `trigger_type`/`trigger_context` keys — applied consistently across all field groups. Envelope fields (`record_id`, `record_type`, `schema_version`, `timestamp`) stay flat at the record root. The JSON Schema files are now the authoritative wire format; this document remains the authoritative *field-meaning* reference. | `schema/cer.schema.json`, `schema/ror.schema.json` |
 | `"other"` as a closed enum value in trigger-context sub-schemas | Allowed in v0.1, with an explicit discipline attached: `other` is a fixed enum member, not a free-text escape hatch — it never accepts an arbitrary deployment string. If real-world usage shows `other` being hit repeatedly for the same underlying case, that's a signal to add an explicit enum value via a schema version bump, not to loosen the field into open text. |
 | `record_id` / `record_hash` strictness | Deliberately permissive shape patterns for v0.1 (accepts both UUIDv4- and ULID-shaped IDs; hash pattern checks `algorithm:hex-digest` shape only). This validates that a value has the right *shape*, not that an ID scheme is cryptographically fixed or that a hash digest is actually correct for its record — those are implementation-level guarantees, not schema-level ones. Locking a specific ID scheme or hash algorithm is premature at v0.1 and deferred. |
-| Project name | **EvidenceRail** used for v0.1; public launch remains subject to final trademark clearance. Schema `$id` namespace uses `https://michvi.com/open-source/evidence-rail/schema/v0.1/...`. The canonical object (`Child-Safety Control Evidence Record`) and its field semantics are unchanged. |
+| Project name | **EvidenceRail** used for v0.1. Schema `$id` namespace uses `https://michvi.com/open-source/evidence-rail/schema/v0.1/...`. The canonical object (`Child-Safety Control Evidence Record`) and its field semantics are unchanged. |

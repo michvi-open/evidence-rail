@@ -1,6 +1,6 @@
 # Contributing to EvidenceRail
 
-*EvidenceRail v0.1 is a release candidate. Public launch remains subject to final trademark clearance.*
+*EvidenceRail v0.1 is the current project version.*
 
 This project is at v0.1 — the object is fixed (see `charter/`), but the schema, examples, and
 reference tooling are still early. Contribution is intentionally lightweight right now; it will

@@ -2,7 +2,7 @@
 
 **Status:** v0.1
 **Version:** 0.1
-**Project name:** EvidenceRail (public launch subject to final trademark clearance)
+**Project name:** EvidenceRail
 
 **Canonical public line:** EvidenceRail — an open schema for portable child-safety control evidence.
 
@@ -184,6 +184,6 @@ Recommended starting structure, modeled loosely on how OCSF and DTSP's Safe Fram
 
 ---
 
-*Naming: **EvidenceRail** is the project name used for v0.1. Final trademark clearance remains a publication gate before public launch, press, or commercial commitment.*
+*Naming: **EvidenceRail** is the project name used for v0.1.*
 
 *One explicit discipline going forward: "Rail" is chosen for its infrastructure feel — neutral, interoperable, standard-like — and nothing more. It should not be over-explained or extended into a literal transport/network metaphor in documentation, diagrams, or marketing. The canonical object this project standardizes remains, unambiguously, the **Child-Safety Control Evidence Record** — the name is a label for that object's home, not a redefinition of what the object is.*
