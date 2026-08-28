@@ -23,7 +23,7 @@
 - [x] Run basic screen-reader/accessibility review.
 - [x] Run narrow/mobile-width checks.
 - [x] Run final secrets, internal-reference, placeholder, and generated-artifact scan.
-- [ ] Confirm repository visibility change from private to public is intentional.
+- [x] Confirm repository visibility change from private to public is intentional.
 - [x] Create and approve the v0.1 release tag and release notes.
 
 ## Boundary statement
