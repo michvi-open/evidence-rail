@@ -1,8 +1,8 @@
 # Changelog
 
-## v0.1.0 — Release Candidate
+## v0.1.0
 
-Initial public-release candidate for EvidenceRail.
+Prepared for the EvidenceRail v0.1 public release.
 
 Includes:
 
