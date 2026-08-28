@@ -1,6 +1,6 @@
 # evidencerail
 
-*Release status: v0.1 release candidate.*
+*Release status: v0.1.*
 
 Reference validator and hashing helpers for the EvidenceRail Child-Safety Control Evidence Schema.
 Same rules as `schema/*.schema.json`, same canonicalization as `tests/validate.py` and

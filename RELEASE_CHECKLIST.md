@@ -15,7 +15,7 @@
 
 ## Publication gates
 
-- [ ] Confirm final trademark/name clearance for “EvidenceRail”.
+- [x] Complete preliminary EvidenceRail name-conflict screen.
 - [x] Confirm final copyright and publisher attribution.
 - [ ] Confirm canonical Michvi schema URLs resolve publicly.
 - [ ] Confirm the Michvi EvidenceRail landing page is live.
