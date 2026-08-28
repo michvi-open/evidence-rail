@@ -1,6 +1,6 @@
 # EvidenceRail — v0.1 Charter
 
-**Status:** Release Candidate v0.1
+**Status:** v0.1
 **Version:** 0.1
 **Project name:** EvidenceRail (public launch subject to final trademark clearance)
 

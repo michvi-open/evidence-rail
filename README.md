@@ -1,6 +1,6 @@
 # EvidenceRail
 
-*Release status: v0.1 release candidate.*
+*Release status: v0.1.*
 
 **EvidenceRail — an open schema for portable child-safety control evidence.**
 
@@ -112,13 +112,15 @@ EvidenceRail v0.1 is feature-complete for the current release scope. Further cha
 
 ## Relationship to Michvi LLP
 
-EvidenceRail is an open-source public contribution maintained separately from
-Michvi LLP's confidential advisory engagements and internal methodologies.
+EvidenceRail is an independent open-source project. It does not disclose or implement confidential Michvi LLP advisory methods or internal systems.
 
-## Attribution
+## Attribution and Acknowledgements
 
-Created and maintained by Shikhar Jha. Published as an open-source public
-contribution by Michvi LLP.
+EvidenceRail was initiated and is maintained by Shikhar Jha as an independent open-source project.
+
+Special acknowledgement is extended to Ashok Kumar Jha and Vinita Jha for their continued support of the work.
+
+Published with support from [Michvi LLP](https://michvi.com).
 
 ## License
 

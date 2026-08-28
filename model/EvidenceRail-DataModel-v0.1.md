@@ -1,6 +1,6 @@
 # EvidenceRail — v0.1 Formal Data Model
 
-**Status:** Release Candidate v0.1
+**Status:** v0.1
 **Project name:** EvidenceRail (public launch subject to final trademark clearance)
 **Companion to:** Charter v0.1 (`EvidenceRail-Charter-v0.1.md`)
 **Scope of this document:** Field-level definitions only. Serialization format (JSON Schema, canonicalization method) and reference implementation are separate, later artifacts — this document fixes *what fields exist, what they mean, and what closes off ambiguity*, per the charter's instruction to design the object before the code.
