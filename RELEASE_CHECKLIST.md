@@ -16,13 +16,13 @@
 ## Publication gates
 
 - [ ] Confirm final trademark/name clearance for “EvidenceRail”.
-- [ ] Confirm final copyright and publisher attribution.
+- [x] Confirm final copyright and publisher attribution.
 - [ ] Confirm canonical Michvi schema URLs resolve publicly.
 - [ ] Confirm the Michvi EvidenceRail landing page is live.
-- [ ] Run keyboard-only accessibility checks.
-- [ ] Run basic screen-reader/accessibility review.
-- [ ] Run narrow/mobile-width checks.
-- [ ] Run final secrets, internal-reference, placeholder, and generated-artifact scan.
+- [x] Run keyboard-only accessibility checks.
+- [x] Run basic screen-reader/accessibility review.
+- [x] Run narrow/mobile-width checks.
+- [x] Run final secrets, internal-reference, placeholder, and generated-artifact scan.
 - [ ] Confirm repository visibility change from private to public is intentional.
 - [ ] Create and approve the v0.1 release tag and release notes.
 
